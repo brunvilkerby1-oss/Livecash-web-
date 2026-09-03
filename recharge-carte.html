@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Recharger la Carte</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #0b1329;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* Top Bar Header */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #172445;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    /* Step 1: LiveCash Account Balance (Source - Anlè) */
+    .source-box {
+      background: linear-gradient(135deg, #172445, #0f172a);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .box-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .source-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .balance-livecash {
+      font-size: 20px;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-top: 8px;
+    }
+
+    /* Arrow Connector */
+    .transfer-arrow {
+      text-align: center;
+      font-size: 24px;
+      color: #38bdf8;
+      margin: -6px 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Form Section */
+    .amount-box {
+      background: #172445;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: #38bdf8;
+    }
+
+    .currency-tag {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    /* Fee Breakdown */
+    .fee-card {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #fef08a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Step 2: Visa Cash Card Destination (Anba) */
+    .destination-box {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .card-balance-current {
+      font-size: 18px;
+      font-weight: 800;
+      color: #f59e0b;
+      margin-top: 6px;
+    }
+
+    /* Confirm Button */
+    .btn-confirm {
+      width: 100%;
+      background: #38bdf8;
+      color: #0b1329;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.3);
+      transition: 0.2s;
+    }
+
+    .btn-confirm:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Recharger Carte Visa</div>
+  </div>
+
+  <!-- 1. LiveCash Source (Anlè) -->
+  <div class="source-box">
+    <div class="box-label">Depuis votre solde principal</div>
+    <div class="source-name">🌐 LiveCash Wallet</div>
+    <div class="balance-livecash" id="livecashBalanceDisplay">$0.00 USD</div>
+  </div>
+
+  <div class="transfer-arrow">⬇</div>
+
+  <!-- 2. Formulaire du montant -->
+  <div class="amount-box">
+    <div class="form-group">
+      <label for="rechargeAmount">Montant à recharger (USD)</label>
+      <div class="input-wrapper">
+        <input type="number" id="rechargeAmount" class="form-control" placeholder="50.00" min="5" oninput="calculateNetCard()">
+        <span class="currency-tag">USDT</span>
+      </div>
+    </div>
+
+    <!-- Frè 2.98 USDT -->
+    <div class="fee-card">
+      <span>📌 Frais de recharge fixe:</span>
+      <strong>2.98 USDT</strong>
+    </div>
+
+    <div style="margin-top: 10px; font-size: 12px; color: #94a3b8; display: flex; justify-content: space-between;">
+      <span>Montant net ajouté à la carte:</span>
+      <strong id="netAmountDisplay" style="color: #38bdf8;">$0.00 USD</strong>
+    </div>
+  </div>
+
+  <!-- 3. Visa Cash Destination (Anba) -->
+  <div class="destination-box">
+    <div class="box-label">Vers votre carte virtuelle</div>
+    <div class="source-name">💳 VISA CASH VIRTUELLE</div>
+    <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Solde actuel de la carte:</div>
+    <div class="card-balance-current" id="cardBalanceDisplay">$0.00 USD</div>
+  </div>
+
+  <!-- Bouton de confirmation -->
+  <button class="btn-confirm" onclick="processCardRecharge()">Confirmer le rechargement</button>
+
+  <script>
+    const FEE_USDT = 2.98;
+
+    // Chaje balans LiveCash ak balans Kart la
+    function initBalances() {
+      const user = JSON.parse(localStorage.getItem('currentUser')) || {
+        balanceHTG: 138000 // Egzanp 1,000 USD
+      };
+
+      const card = JSON.parse(localStorage.getItem('userCard')) || {
+        balanceUSD: 0.00
+      };
+
+      // Konvèti HTG an USD pou LiveCash
+      const livecashUSD = (user.balanceHTG / 138).toFixed(2);
+
+      document.getElementById('livecashBalanceDisplay').innerText = `$${livecashUSD} USD (${user.balanceHTG.toLocaleString()} HTG)`;
+      document.getElementById('cardBalanceDisplay').innerText = `$${parseFloat(card.balanceUSD).toFixed(2)} USD`;
+    }
+
+    // Kalkile konbyen kòb k ap rantre sou kat la apre frè 2.98 USDT
+    function calculateNetCard() {
+      const amount = parseFloat(document.getElementById('rechargeAmount').value) || 0;
+      if (amount > FEE_USDT) {
+        const net = (amount - FEE_USDT).toFixed(2);
+        document.getElementById('netAmountDisplay').innerText = `$${net} USD`;
+      } else {
+        document.getElementById('netAmountDisplay').innerText = `$0.00 USD`;
+      }
+    }
+
+    // Traite rechaj la otomatikman
+    function processCardRecharge() {
+      const amount = parseFloat(document.getElementById('rechargeAmount').value);
+
+      if (!amount || amount <= FEE_USDT) {
+        alert(`Veuillez entrer un montant supérieur aux frais de $${FEE_USDT} USDT.`);
+        return;
+      }
+
+      let user = JSON.parse(localStorage.getItem('currentUser')) || { balanceHTG: 138000 };
+      let card = JSON.parse(localStorage.getItem('userCard')) || { balanceUSD: 0.00 };
+
+      const amountHTGNeeded = amount * 138;
+
+      if (user.balanceHTG < amountHTGNeeded) {
+        alert("Solde LiveCash insuffisant ! Veuillez effectuer un dépôt sur votre compte principal.");
+        return;
+      }
+
+      // 1. Retire kòb sou LiveCash
+      user.balanceHTG -= amountHTGNeeded;
+
+      // 2. Ajoute kòb sou Kat Visa a (mwens frè 2.98)
+      const netToAdd = amount - FEE_USDT;
+      card.balanceUSD = (parseFloat(card.balanceUSD) + netToAdd).toFixed(2);
+
+      // Sove nan localStorage
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      localStorage.setItem('userCard', JSON.stringify(card));
+
+      alert(`Recharge réussie ! $${netToAdd.toFixed(2)} USD ont été ajoutés à votre carte Visa Cash.`);
+      
+      // Rafrechi paj la ak nouvo balans yo
+      initBalances();
+      document.getElementById('rechargeAmount').value = '';
+      document.getElementById('netAmountDisplay').innerText = '$0.00 USD';
+    }
+
+    // Init
+    initBalances();
+  </script>
+
+</body>
+</html>
