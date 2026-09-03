@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LiveCash - Dashboard App</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-app: #080b11;
+      --card-surface: #121824;
+      --card-border: rgba(255, 255, 255, 0.07);
+      --primary-gold: #f3c623;
+      --gold-gradient: linear-gradient(135deg, #f3c623 0%, #101725 100%);
+      --text-main: #ffffff;
+      --text-sub: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #000; color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; }
+
+    /* Container Aplikasyon Mobil */
+    .app-screen {
+      width: 100%; max-width: 430px; background-color: var(--bg-app);
+      min-height: 100vh; padding: 16px; padding-bottom: 110px; position: relative;
+    }
+
+    /* Header Aplikasyon */
+    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 6px; }
+    .user-profile { display: flex; align-items: center; gap: 12px; }
+    .avatar-box { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gold); color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .user-meta h4 { font-size: 15px; font-weight: 700; }
+    .user-meta p { font-size: 11px; color: var(--text-sub); }
+    .head-action { width: 40px; height: 40px; background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; }
+
+    /* Kat Pòtfèy Prensipal */
+    .wallet-card {
+      background: linear-gradient(145deg, #161e2e 0%, #0d121c 100%);
+      border: 1px solid var(--card-border); border-radius: 22px; padding: 20px;
+      margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+    .wallet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .wallet-title { font-size: 11px; text-transform: uppercase; color: var(--text-sub); letter-spacing: 1px; font-weight: 700; }
+    .wallet-amount { font-size: 34px; font-weight: 800; margin-bottom: 18px; color: var(--text-main); }
+    .wallet-amount span { font-size: 14px; color: var(--primary-gold); }
+
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-action { padding: 12px; border-radius: 12px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-gold { background: var(--primary-gold); color: #000; }
+    .btn-dark { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid var(--card-border); }
+
+    /* Kat Virtiyèl Preview (Aparans Vre Kat Bankè) */
+    .card-preview {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(243, 198, 35, 0.3); border-radius: 18px; padding: 18px;
+      margin-bottom: 22px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .card-row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .chip { width: 34px; height: 24px; background: #cbd5e1; border-radius: 5px; }
+    .brand { font-size: 16px; font-weight: 800; font-style: italic; color: #fff; }
+    .card-number { font-family: monospace; font-size: 15px; letter-spacing: 2px; margin-bottom: 12px; color: #e2e8f0; }
+    .card-row-bot { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-sub); }
+
+    /* Tit Seksyon */
+    .section-title { font-size: 12px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+    /* Sèvisyo Ranje an Grid Aplikasyon */
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+    .service-box {
+      background: var(--card-surface); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 16px; text-decoration: none; color: white; display: flex; flex-direction: column; gap: 10px;
+    }
+    .service-box:active { transform: scale(0.98); }
+    .srv-icon { width: 40px; height: 40px; background: rgba(243, 198, 35, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid rgba(243, 198, 35, 0.2); }
+    .srv-name { font-size: 14px; font-weight: 700; }
+    .srv-desc { font-size: 11px; color: var(--text-sub); }
+
+    /* Bottom App Navigation Bar */
+    .app-navbar {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px;
+      background: rgba(18, 24, 36, 0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--card-border);
+      display: flex; justify-content: space-around; padding: 12px 0 16px; z-index: 99;
+    }
+    .nav-tab { text-decoration: none; color: var(--text-sub); font-size: 10px; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .nav-tab.active { color: var(--primary-gold); }
+    .nav-tab span { font-size: 18px; }
+
+    /* Modal Pou Recharge Rapid */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-card { background: var(--card-surface); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; width: 100%; max-width: 340px; text-align: center; }
+    .modal-card input { width: 100%; padding: 12px; background: #080b11; border: 1px solid var(--card-border); border-radius: 10px; color: #fff; margin: 15px 0; outline: none; text-align: center; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="app-screen">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="user-profile">
+      <div class="avatar-box">LC</div>
+      <div class="user-meta">
+        <h4>Benvini, LiveCash</h4>
+        <p>Kont Aktif ✓</p>
+      </div>
+    </div>
+    <div class="head-action">🔔</div>
+  </header>
+
+  <!-- Pòtfèy Prensipal -->
+  <section class="wallet-card">
+    <div class="wallet-head">
+      <span class="wallet-title">Solde Pòtfèy</span>
+    </div>
+    <div class="wallet-amount">$0.00 <span>USD</span></div>
+    <div class="action-grid">
+      <button class="btn-action btn-gold" onclick="openModal()">+ Depoze / Recharge</button>
+      <button class="btn-action btn-dark">↓ Retire</button>
+    </div>
+  </section>
+
+  <!-- Visual Kat Virtiyèl -->
+  <div class="section-title">KAT VIRTIYÈL OU (VISA CASH)</div>
+  <div class="card-preview">
+    <div class="card-row-top">
+      <div class="chip"></div>
+      <div class="brand">VISA</div>
+    </div>
+    <div class="card-number">•••• •••• •••• 4092</div>
+    <div class="card-row-bot">
+      <span>LIVECASH CARD</span>
+      <span>EXP: 12/28</span>
+    </div>
+  </div>
+
+  <!-- Sèvis Yo Disponib Direktèman Pou Moun Nan Swwaw -->
+  <div class="section-title">SÈVIS DISPONIB YO</div>
+  <div class="services-grid">
+    <a href="card.html" class="service-box">
+      <div class="srv-icon">💳</div>
+      <div>
+        <div class="srv-name">Visa Cash</div>
+        <div class="srv-desc">Kreyasyon ak jere kat virtiyèl</div>
+      </div>
+    </a>
+    <a href="boost.html" class="service-box">
+      <div class="srv-icon">🚀</div>
+      <div>
+        <div class="srv-name">Boostaj Sosyo</div>
+        <div class="srv-desc">TikTok, Instagram, Facebook</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Modal Recharge -->
+<div class="modal-overlay" id="reloadModal">
+  <div class="modal-card">
+    <h3 style="color: var(--primary-gold);">Rechaje Kat</h3>
+    <p style="font-size: 12px; color: var(--text-sub); margin-top: 6px;">Antre montan USD ou vle mete sou kat la:</p>
+    <input type="number" placeholder="$0.00">
+    <button class="btn-action btn-gold" style="width: 100%;" onclick="closeModal(); alert('Demann rechaj la voye ak siksè!');">Konfime</button>
+    <p style="margin-top: 12px; font-size: 12px; color: var(--text-sub); cursor: pointer;" onclick="closeModal()">Anule</p>
+  </div>
+</div>
+
+<!-- Bottom App Navigation Bar -->
+<nav class="app-navbar">
+  <a href="dashboard.html" class="nav-tab active">
+    <span>🏠</span>
+    <div>Akèy</div>
+  </a>
+  <a href="card.html" class="nav-tab">
+    <span>💳</span>
+    <div>Kat</div>
+  </a>
+  <a href="boost.html" class="nav-tab">
+    <span>🚀</span>
+    <div>Boost</div>
+  </a>
+  <a href="index.html" class="nav-tab">
+    <span>👤</span>
+    <div>Pwofil</div>
+  </a>
+</nav>
+
+<script>
+  function openModal() { document.getElementById('reloadModal').style.display = 'flex'; }
+  function closeModal() { document.getElementById('reloadModal').style.display = 'none'; }
+</script>
+
+</body>
+</html>
