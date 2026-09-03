@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Dashboard</title>
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --card-bg: #12161f;
+      --accent-gold: #d4af37;
+      --accent-gold-glow: rgba(212, 175, 55, 0.2);
+      --text-white: #ffffff;
+      --text-gray: #8a94a6;
+      --border-color: #1e2532;
+    }
+
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: var(--text-white); margin: 0; padding: 16px; padding-bottom: 100px; }
+
+    .app-container { max-width: 420px; margin: 0 auto; }
+
+    /* Top Bar Header */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; margin-top: 5px; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    
+    .menu-btn {
+      background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-white);
+      width: 42px; height: 42px; border-radius: 12px; font-size: 20px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .username { font-weight: 700; font-size: 15px; }
+
+    /* Balance Section */
+    .balance-box {
+      background: linear-gradient(160deg, #161c28 0%, #0e121a 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 24px; padding: 24px; text-align: center; margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    .balance-title { color: var(--text-gray); font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+    .balance-amount { font-size: 38px; font-weight: 800; color: var(--text-white); margin: 12px 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .currency-tag { font-size: 12px; color: var(--accent-gold); font-weight: bold; background: rgba(212,175,55,0.12); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); }
+
+    /* Action Buttons */
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .btn-act {
+      padding: 14px; border-radius: 14px; font-weight: 700; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;
+      text-decoration: none; transition: 0.2s;
+    }
+    .btn-deposit { background: var(--accent-gold); color: #000; box-shadow: 0 4px 15px var(--accent-gold-glow); }
+    .btn-withdraw { background: var(--card-bg); color: var(--text-white); border: 1px solid var(--border-color); }
+
+    /* Service Cards */
+    .section-title { font-size: 15px; font-weight: 700; margin: 24px 0 14px; color: var(--text-gray); letter-spacing: 0.5px; }
+    .service-card {
+      background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px;
+      padding: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+      text-decoration: none; color: white; transition: transform 0.2s, border-color 0.2s;
+    }
+    .service-card:active { transform: scale(0.98); }
+    .service-info { display: flex; align-items: center; gap: 14px; }
+    .service-icon { width: 48px; height: 48px; background: rgba(212, 175, 55, 0.08); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid rgba(212, 175, 55, 0.2); }
+
+    /* Side Navigation Drawer */
+    .drawer-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
+      z-index: 999; display: none; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .drawer {
+      position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
+      background: #0e121a; border-right: 1px solid var(--border-color);
+      z-index: 1000; padding: 24px; transition: left 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .drawer.open { left: 0; }
+    .drawer-overlay.open { display: block; opacity: 1; }
+
+    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .drawer-title { font-size: 20px; font-weight: 800; color: var(--accent-gold); }
+    .close-drawer { font-size: 24px; color: var(--text-gray); cursor: pointer; }
+
+    .drawer-menu { display: flex; flex-direction: column; gap: 10px; }
+    .drawer-link {
+      display: flex; align-items: center; gap: 14px; padding: 12px 14px; color: var(--text-white);
+      text-decoration: none; font-size: 15px; font-weight: 600; border-radius: 12px; transition: background 0.2s;
+      cursor: pointer;
+    }
+    .drawer-link:active, .drawer-link:hover { background: var(--card-bg); color: var(--accent-gold); }
+
+    /* Bottom Navbar */
+    .navbar {
+      position: fixed; bottom: 0; left: 0; right: 0; background: rgba(14, 18, 26, 0.95);
+      backdrop-filter: blur(12px); border-top: 1px solid var(--border-color);
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 10px 0 14px 0; max-width: 420px; margin: 0 auto; z-index: 900;
+    }
+    .nav-item {
+      text-align: center; color: var(--text-gray); text-decoration: none; font-size: 11px;
+      font-weight: 600; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
+    }
+    .nav-item.active { color: var(--accent-gold); }
+    .nav-icon { font-size: 22px; }
+
+    /* Modal Popup */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center; z-index: 1001;
+    }
+    .modal-box {
+      background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px;
+      padding: 24px; width: 90%; max-width: 360px; color: var(--text-white);
+    }
+    .modal-box h3 { margin: 0 0 10px 0; font-size: 18px; color: var(--accent-gold); }
+    .modal-box input {
+      width: 100%; padding: 14px; background: #0a0c10; border: 1px solid var(--border-color);
+      border-radius: 12px; color: white; font-size: 16px; margin: 15px 0; outline: none;
+    }
+    .modal-box button {
+      width: 100%; padding: 14px; background: var(--accent-gold); color: #000;
+      border: none; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Side Menu Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeMenu()"></div>
+
+<!-- Side Navigation Drawer -->
+<div class="drawer" id="sideDrawer">
+  <div>
+    <div class="drawer-header">
+      <div class="drawer-title">LiveCash</div>
+      <div class="close-drawer" onclick="closeMenu()">✕</div>
+    </div>
+    <div class="drawer-menu">
+      <a href="dashboard.html" class="drawer-link"><span>🏠</span> Akèy</a>
+      <a href="card.html" class="drawer-link"><span>💳</span> Mes Cartes (Visa Cash)</a>
+      <div class="drawer-link" onclick="closeMenu(); openReloadModal();"><span>⚡</span> Recharger la Carte</div>
+      <a href="boost.html" class="drawer-link"><span>🚀</span> Boostaj Rezo Sosyo</a>
+      <a href="#" class="drawer-link"><span>📜</span> Historique Transactions</a>
+      <a href="#" class="drawer-link"><span>⚙️</span> Paramètres</a>
+    </div>
+  </div>
+  <a href="index.html" class="drawer-link" style="color: #ff5555;"><span>🚪</span> Déconnexion</a>
+</div>
+
+<div class="app-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <button class="menu-btn" onclick="openMenu()">☰</button>
+      <div class="user-info">
+        <div class="avatar">LC</div>
+        <div class="username">Benvini, LiveCash</div>
+      </div>
+    </div>
+    <div style="font-size: 20px; cursor: pointer;">🔔</div>
+  </div>
+
+  <!-- Solde Wallet -->
+  <div class="balance-box">
+    <span class="balance-title">Solde Pòtfèy Prensipal</span>
+    <div class="balance-amount">$0.00 <span class="currency-tag">USD</span></div>
+    <div class="action-grid">
+      <button class="btn-act btn-deposit" onclick="openReloadModal()"><span>+</span> Depoze / Recharge</button>
+      <button class="btn-act btn-withdraw"><span>↓</span> Retire</button>
+    </div>
+  </div>
+
+  <!-- Sèvis Yo -->
+  <div class="section-title">SÈVIS DISPONIB YO</div>
+
+  <a href="card.html" class="service-card">
+    <div class="service-info">
+      <div class="service-icon">💳</div>
+      <div>
+        <div style="font-weight:700; font-size:15px;">Visa Cash</div>
+        <div style="font-size:12px; color:var(--text-gray); margin-top:2px;">Kat virtiyèl pou peye sou entènèt</div>
+      </div>
+    </div>
+    <span style="color:var(--accent-gold); font-weight:bold;">→</span>
+  </a>
+
+  <a href="boost.html" class="service-card">
+    <div class="service-info">
+      <div class="service-icon">🚀</div>
+      <div>
+        <div style="font-weight:700; font-size:15px;">Boostaj Rezo Sosyo</div>
+        <div style="font-size:12px; color:var(--text-gray); margin-top:2px;">TikTok, Instagram, Facebook</div>
+      </div>
+    </div>
+    <span style="color:var(--accent-gold); font-weight:bold;">→</span>
+  </a>
+</div>
+
+<!-- Modal Pop-up -->
+<div class="modal-overlay" id="reloadModal">
+  <div class="modal-box">
+    <h3>Recharger la Carte Visa</h3>
+    <p style="font-size: 13px; color: var(--text-gray); margin: 0;">Antre montan USD ou vle transfere soti nan pòtfèy la pou ale sou kat la:</p>
+    <input type="number" placeholder="Montant USD ($)" min="1">
+    <button onclick="closeReloadModal(); alert('Mèsi! Transfè sou kat la anrejistre.');">Valider le Rechargement</button>
+    <div style="text-align: center; margin-top: 12px; font-size: 13px; color: var(--text-gray); cursor: pointer;" onclick="closeReloadModal()">Anuler</div>
+  </div>
+</div>
+
+<!-- Bottom Navbar -->
+<div class="navbar">
+  <a href="dashboard.html" class="nav-item active">
+    <span class="nav-icon">🏠</span>
+    <span>Akèy</span>
+  </a>
+  <a href="card.html" class="nav-item">
+    <span class="nav-icon">💳</span>
+    <span>Kat</span>
+  </a>
+  <a href="boost.html" class="nav-item">
+    <span class="nav-icon">🚀</span>
+    <span>Boost</span>
+  </a>
+  <div class="nav-item" onclick="openMenu()">
+    <span class="nav-icon">👤</span>
+    <span>Pwofil</span>
+  </div>
+</div>
+
+<script>
+  function openMenu() {
+    document.getElementById('sideDrawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('sideDrawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+  }
+
+  function openReloadModal() {
+    document.getElementById('reloadModal').style.display = 'flex';
+  }
+
+  function closeReloadModal() {
+    document.getElementById('reloadModal').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
