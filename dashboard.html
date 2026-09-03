@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Dashboard</title>
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --card-bg: #12161f;
+      --accent-gold: #d4af37;
+      --text-white: #ffffff;
+      --text-gray: #8a94a6;
+      --border-color: #1e2532;
+    }
+
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-white); margin: 0; padding: 16px; padding-bottom: 90px; }
+
+    .app-container { max-width: 420px; margin: 0 auto; }
+
+    /* Header Profile */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-gold); color: #000; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+    .username { font-weight: 700; font-size: 15px; }
+
+    /* Top Balance Section */
+    .balance-box {
+      background: linear-gradient(145deg, #161c28, #0e121a);
+      border: 1px solid var(--border-color);
+      border-radius: 24px; padding: 24px; text-align: center; margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .balance-title { color: var(--text-gray); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+    .balance-amount { font-size: 36px; font-weight: 800; color: var(--text-white); margin: 10px 0; }
+    .currency-tag { font-size: 14px; color: var(--accent-gold); font-weight: bold; background: rgba(212,175,55,0.1); padding: 4px 10px; border-radius: 20px; }
+
+    /* Action Buttons */
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    .btn-act {
+      padding: 14px; border-radius: 14px; font-weight: 700; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px;
+      text-decoration: none;
+    }
+    .btn-deposit { background: var(--accent-gold); color: #000; }
+    .btn-withdraw { background: var(--card-bg); color: var(--text-white); border: 1px solid var(--border-color); }
+
+    /* Service Navigation Tabs */
+    .section-title { font-size: 16px; font-weight: 700; margin: 24px 0 12px; color: var(--text-gray); }
+    .service-card {
+      background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px;
+      padding: 18px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+      text-decoration: none; color: white; transition: 0.2s;
+    }
+    .service-card:active { transform: scale(0.98); }
+    .service-info { display: flex; align-items: center; gap: 14px; }
+    .service-icon { width: 46px; height: 46px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-gold); }
+
+    /* Bottom Navigation Bar */
+    .navbar {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #0e121a;
+      border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
+      padding: 12px 0; max-width: 420px; margin: 0 auto;
+    }
+    .nav-item { text-align: center; color: var(--text-gray); text-decoration: none; font-size: 11px; }
+    .nav-item.active { color: var(--accent-gold); font-weight: bold; }
+    .nav-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="user-info">
+      <div class="avatar">LC</div>
+      <div class="username">Benvini, LiveCash</div>
+    </div>
+    <div style="font-size: 20px;">🔔</div>
+  </div>
+
+  <!-- Solde Wallet -->
+  <div class="balance-box">
+    <span class="balance-title">Solde Pòtfèy</span>
+    <div class="balance-amount">$0.00 <span class="currency-tag">USD</span></div>
+    <div class="action-grid">
+      <a href="#" class="btn-act btn-deposit"><span>+</span> Depoze</a>
+      <a href="#" class="btn-act btn-withdraw"><span>↓</span> Retire</a>
+    </div>
+  </div>
+
+  <!-- Sèvis Prensipal Yo -->
+  <div class="section-title">Sèvis LiveCash</div>
+
+  <a href="card.html" class="service-card">
+    <div class="service-info">
+      <div class="service-icon">💳</div>
+      <div>
+        <div style="font-weight:700;">Visa Cash</div>
+        <div style="font-size:12px; color:var(--text-gray);">Kat virtiyèl pou peye sou entènèt</div>
+      </div>
+    </div>
+    <span>→</span>
+  </a>
+
+  <a href="boost.html" class="service-card">
+    <div class="service-info">
+      <div class="service-icon">🚀</div>
+      <div>
+        <div style="font-weight:700;">Boostaj Rezo Sosyo</div>
+        <div style="font-size:12px; color:var(--text-gray);">TikTok, Instagram, Facebook</div>
+      </div>
+    </div>
+    <span>→</span>
+  </a>
+</div>
+
+<!-- Bottom Navbar -->
+<div class="navbar">
+  <a href="dashboard.html" class="nav-item active"><span class="nav-icon">🏠</span>Akèy</a>
+  <a href="card.html" class="nav-item"><span class="nav-icon">💳</span>Kat</a>
+  <a href="boost.html" class="nav-item"><span class="nav-icon">🚀</span>Boost</a>
+  <a href="#" class="nav-item"><span class="nav-icon">👤</span>Pwofil</a>
+</div>
+
+</body>
+</html>
