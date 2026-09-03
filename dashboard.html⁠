@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LiveCash - Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg-dark: #080b11;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary-gold: #f3c623;
+      --text-white: #ffffff;
+      --text-gray: #94a3b8;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-dark); color: var(--text-white); min-height: 100vh; display: flex; justify-content: center; padding-bottom: 90px; }
+
+    .app-screen { width: 100%; max-width: 430px; padding: 18px; position: relative; }
+
+    /* Top Bar Header */
+    .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-top: 6px; }
+    .user-info { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #f3c623, #d4a307); color: #000; font-weight: 800; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 15px rgba(243, 198, 35, 0.3); }
+    .user-text h4 { font-size: 15px; font-weight: 700; }
+    .user-text p { font-size: 11px; color: var(--success); font-weight: 600; }
+
+    .menu-trigger { width: 44px; height: 44px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary-gold); cursor: pointer; backdrop-filter: blur(10px); }
+
+    /* Hero / Solde Principal LiveCash */
+    .hero-balance {
+      background: linear-gradient(145deg, #131a29 0%, #0a0d14 100%);
+      border: 1px solid var(--card-border); border-radius: 26px; padding: 24px;
+      text-align: center; margin-bottom: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+    }
+    .hero-balance::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(243, 198, 35, 0.12) 0%, transparent 60%); pointer-events: none; }
+    .bal-title { font-size: 11px; text-transform: uppercase; color: var(--text-gray); letter-spacing: 1.5px; font-weight: 700; }
+    .bal-val { font-size: 38px; font-weight: 800; color: #fff; margin: 10px 0 18px; }
+    .bal-val span { font-size: 14px; color: var(--primary-gold); }
+
+    .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn-act { padding: 14px; border-radius: 14px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-gold { background: linear-gradient(135deg, #f3c623, #d4a307); color: #000; box-shadow: 0 6px 20px rgba(243, 198, 35, 0.25); }
+    .btn-dark { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid var(--card-border); }
+
+    /* Banners Akèy ak Lavi (Services Highlights) */
+    .sec-title { font-size: 12px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    
+    .promo-banner {
+      background: linear-gradient(135deg, rgba(243, 198, 35, 0.15) 0%, rgba(18, 24, 38, 0.8) 100%);
+      border: 1px solid rgba(243, 198, 35, 0.3); border-radius: 20px; padding: 20px; margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+    }
+    .banner-text h3 { font-size: 16px; font-weight: 800; color: var(--primary-gold); margin-bottom: 4px; }
+    .banner-text p { font-size: 12px; color: var(--text-gray); }
+
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .srv-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 18px;
+      display: flex; flex-direction: column; gap: 12px; cursor: pointer; backdrop-filter: blur(10px);
+    }
+    .srv-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(243, 198, 35, 0.1); border: 1px solid rgba(243, 198, 35, 0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary-gold); }
+
+    /* Side Drawer Menu (Meni ki Plen Bagay Yo) */
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; }
+    .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: #0c1017; border-left: 1px solid var(--card-border); z-index: 1001; padding: 24px; transition: 0.3s ease; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
+    .drawer.open { right: 0; }
+    .drawer-overlay.open { display: block; }
+
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); margin-bottom: 20px; }
+    .drawer-sec-title { font-size: 11px; text-transform: uppercase; color: var(--text-gray); letter-spacing: 1px; margin: 16px 0 8px; font-weight: 700; }
+    
+    .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 8px; color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .menu-item:active { background: rgba(243, 198, 35, 0.15); }
+    .menu-item-left { display: flex; align-items: center; gap: 12px; }
+
+    /* Modal Pop-ups */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .modal-box { background: #121826; border: 1px solid var(--card-border); border-radius: 24px; padding: 24px; width: 100%; max-width: 360px; text-align: center; max-height: 90vh; overflow-y: auto; }
+    .modal-box input, .modal-box select { width: 100%; padding: 14px; background: #080b11; border: 1px solid var(--card-border); border-radius: 12px; color: #fff; margin: 10px 0; outline: none; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<!-- App Screen Container -->
+<div class="app-screen">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="user-info">
+      <div class="avatar">LC</div>
+      <div class="user-text">
+        <h4>Benvini, LiveCash</h4>
+        <p>Kont Verifye ✓</p>
+      </div>
+    </div>
+    <div class="menu-trigger" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <!-- Balance LiveCash Principal -->
+  <section class="hero-balance">
+    <div class="bal-title">Solde Pòtfèy LiveCash</div>
+    <div class="bal-val">$0.00 <span>USD</span></div>
+    <div class="hero-actions">
+      <button class="btn-act btn-gold" onclick="openDepositModal()">+ Depoze Kòb</button>
+      <button class="btn-act btn-dark" onclick="openMenu()">Meni Sèvis</button>
+    </div>
+  </section>
+
+  <!-- Banner Akèy / Promo Kat -->
+  <div class="sec-title">SÈVIS KAT VIRTIYÈL</div>
+  <div class="promo-banner" onclick="handleCardAction()">
+    <div class="banner-text">
+      <h3 id="bannerTitle">Commander une Carte Visa</h3>
+      <p id="bannerSub">Obtenez votre carte virtuelle en quelques secondes.</p>
+    </div>
+    <div style="font-size: 24px; color: var(--primary-gold);">➔</div>
+  </div>
+
+  <!-- Sèvis Yo Grid -->
+  <div class="sec-title">SÈVIS DISPONIB YO</div>
+  <div class="services-grid">
+    <div class="srv-card" onclick="openBoostModal()">
+      <div class="srv-icon">🚀</div>
+      <div>
+        <div style="font-weight: 700; font-size: 14px;">Boostaj Sosyo</div>
+        <div style="font-size: 11px; color: var(--text-gray); margin-top: 3px;">TikTok, Instagram, Facebook</div>
+      </div>
+    </div>
+    <div class="srv-card" onclick="openSupportModal()">
+      <div class="srv-icon">💬</div>
+      <div>
+        <div style="font-weight: 700; font-size: 14px;">Support Kliyantè</div>
+        <div style="font-size: 11px; color: var(--text-gray); margin-top: 3px;">Kontakte responsab sit la</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer Menu (Meni an ki plen bagay) -->
+<div class="drawer-overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="drawer" id="drawer">
+  <div>
+    <div class="drawer-head">
+      <h3 style="color: var(--primary-gold); font-weight: 800;">MENI LIVECASH</h3>
+      <div style="cursor: pointer; font-size: 18px;" onclick="toggleMenu()">✕</div>
+    </div>
+
+    <!-- Seksyon Kat Virtiyèl -->
+    <div class="drawer-sec-title">GERE KAT VIRTIYÈL (VISA CASH)</div>
+    <div class="menu-item" onclick="handleCardAction()">
+      <div class="menu-item-left"><span>💳</span> <span id="menuCardText">Commander une Carte</span></div>
+      <span style="color: var(--primary-gold);">➔</span>
+    </div>
+
+    <!-- Balans Kat la ak ti koulè pal -->
+    <div class="menu-item" style="background: rgba(243, 198, 35, 0.05); border-color: rgba(243, 198, 35, 0.2);">
+      <div class="menu-item-left"><span>💰</span> <span>Balans Visa Cash:</span></div>
+      <span style="color: rgba(243, 198, 35, 0.7); font-weight: 800;">$0.00 USD</span>
+    </div>
+
+    <div class="menu-item" onclick="openReloadCardModal()">
+      <div class="menu-item-left"><span>⚡</span> <span>Recharger Ma Carte</span></div>
+      <span style="color: var(--text-gray); font-size: 11px;">+ Frè</span>
+    </div>
+
+    <!-- Seksyon Kont & Depo -->
+    <div class="drawer-sec-title">DEPÔT & RECHARGE LIVECASH</div>
+    <div class="menu-item" onclick="openDepositModal()">
+      <div class="menu-item-left"><span>📥</span> <span>Depoze Kòb sou LiveCash</span></div>
+      <span style="color: var(--text-gray); font-size: 11px;">MonCash/Natcash/Crypto</span>
+    </div>
+
+    <!-- Seksyon Boostaj -->
+    <div class="drawer-sec-title">BOOSTAJ REZO SOSYO</div>
+    <div class="menu-item" onclick="openBoostModal()">
+      <div class="menu-item-left"><span>🚀</span> <span>Kòmande Boostaj</span></div>
+      <span>➔</span>
+    </div>
+
+    <!-- Support -->
+    <div class="drawer-sec-title">SIPÒ AK NOUVEL</div>
+    <div class="menu-item" onclick="openSupportModal()">
+      <div class="menu-item-left"><span>🎧</span> <span>Support / Kontak Responsab</span></div>
+      <span>💬</span>
+    </div>
+  </div>
+
+  <div class="menu-item" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); color: #ef4444;" onclick="location.href='index.html'">
+    <div class="menu-item-left"><span>🚪</span> <span>Dekonekte</span></div>
+  </div>
+</div>
+
+<!-- Modal 1: Commander Une Carte -->
+<div class="modal-overlay" id="orderCardModal">
+  <div class="modal-box">
+    <h3 style="color: var(--primary-gold); margin-bottom: 8px;">Commander une Carte Visa Cash</h3>
+    <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 12px;">Antre enfòmasyon ou pou kreye kat la:</p>
+    <input type="text" placeholder="Nom complet (jan l ap parèt sou kat la)">
+    <input type="email" placeholder="Adresse Email">
+    <input type="password" maxlength="4" placeholder="Kòd PIN Sekirite (4 Chif)">
+    <button class="btn-act btn-gold" style="width: 100%; margin-top: 10px;" onclick="confirmCardOrder()">Konfime & Kreye Kat</button>
+    <p style="margin-top: 12px; font-size: 12px; color: var(--text-gray); cursor: pointer;" onclick="closeModals()">Anule</p>
+  </div>
+</div>
+
+<!-- Modal 2: Details Carte (Mande PIN) -->
+<div class="modal-overlay" id="cardDetailsModal">
+  <div class="modal-box">
+    <h3 style="color: var(--primary-gold); margin-bottom: 8px;">My Card (Visa Cash)</h3>
+    <div id="pinSection">
+      <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 12px;">Antre kòd PIN 4 chif ou pou wè detay kat la:</p>
+      <input type="password" id="pinInput" maxlength="4" placeholder="Kòd PIN 4 Chif" style="text-align: center; letter-spacing: 5px; font-size: 18px;">
+      <button class="btn-act btn-gold" style="width: 100%; margin-top: 10px;" onclick="unlockCardDetails()">Voir Détails</button>
+    </div>
+    
+    <div id="detailsSection" style="display: none; text-align: left; background: #080b11; padding: 16px; border-radius: 14px; border: 1px solid var(--card-border); margin-top: 10px;">
+      <p style="font-size: 11px; color: var(--text-gray);">Numéro de Carte:</p>
+      <p style="font-size: 16px; font-weight: bold; font-family: monospace; color: #fff; margin-bottom: 10px;">4532 8901 2345 4092</p>
+      <div style="display: flex; justify-content: space-between;">
+        <div>
+          <p style="font-size: 11px; color: var(--text-gray);">EXP:</p>
+          <p style="font-size: 14px; font-weight: bold;">12/28</p>
+        </div>
+        <div>
+          <p style="font-size: 11px; color: var(--text-gray);">CVV:</p>
+          <p style="font-size: 14px; font-weight: bold; color: var(--primary-gold);">882</p>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top: 16px; font-size: 12px; color: var(--text-gray); cursor: pointer;" onclick="closeModals()">Fèmen</p>
+  </div>
+</div>
+
+<!-- Modal 3: Recharger Kat la ak Frè -->
+<div class="modal-overlay" id="reloadCardModal">
+  <div class="modal-box">
+    <h3 style="color: var(--primary-gold); margin-bottom: 8px;">Recharger Visa Cash</h3>
+    <p style="font-size: 12px; color: var(--text-gray);">Antre montan USD ou vle mete sou kat la:</p>
+    <input type="number" id="reloadAmount" placeholder="$0.00 USD" oninput="calculateFees()">
+    <div style="background: #080b11; padding: 10px; border-radius: 10px; margin: 10px 0; font-size: 12px; color: var(--text-gray); text-align: left;">
+      <p>Frè Rechaj (5%): <span id="feeVal" style="color: var(--primary-gold); font-weight: bold;">$0.00 USD</span></p>
+      <p style="margin-top: 4px;">Total ap debite sou LiveCash: <span id="totalVal" style="color: #fff; font-weight: bold;">$0.00 USD</span></p>
+    </div>
+    <button class="btn-act btn-gold" style="width: 100%;" onclick="alert('Kat la rechaje ak siksè!'); closeModals();">Konfime Rechaj</button>
+    <p style="margin-top: 12px; font-size: 12px; color: var(--text-gray); cursor: pointer;" onclick="closeModals()">Anule</p>
+  </div>
+</div>
+
+<!-- Modal 4: Depose sou LiveCash (Mwayen Peman) -->
+<div class="modal-overlay" id="depositModal">
+  <div class="modal-box">
+    <h3 style="color: var(--primary-gold); margin-bottom: 8px;">Depoze Kòb sou LiveCash</h3>
+    <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 10px;">Chwazi mwayen peman ou vle itilize a:</p>
+    <select>
+      <option>🟠 MonCash</option>
+      <option>🔴 Natcash</option>
+      <option>💎 Crypto (USDT / BNB)</option>
+    </select>
+    <input type="number" placeholder="Montant USD ($)">
+    <button class="btn-act btn-gold" style="width: 100%; margin-top: 10px;" onclick="alert('Demann depo a voye ak siksè!'); closeModals();">Kontinye Peman</button>
+    <p style="margin-top: 12px; font-size: 12px; color: var(--text-gray); cursor: pointer;" onclick="closeModals()">Anule</p>
+  </div>
+</div>
+
+<script>
+  let hasCard = false; // Chanje pou true si itilizatè a gen kat deja
+
+  function toggleMenu() {
+    document.getElementById('drawer').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('open');
+  }
+
+  function handleCardAction() {
+    toggleMenu();
+    if(!hasCard) {
+      document.getElementById('orderCardModal').style.display = 'flex';
+    } else {
+      document.getElementById('pinSection').style.display = 'block';
+      document.getElementById('detailsSection').style.display = 'none';
+      document.getElementById('cardDetailsModal').style.display = 'flex';
+    }
+  }
+
+  function confirmCardOrder() {
+    hasCard = true;
+    document.getElementById('bannerTitle').innerText = "My Card (Visa Cash)";
+    document.getElementById('bannerSub').innerText = "Klike pou wè detay kat ou ak balans ou.";
+    document.getElementById('menuCardText').innerText = "My Card (Visa Cash)";
+    closeModals();
+    alert("Felisitasyon! Kat Visa Cash ou kreye ak siksè.");
+  }
+
+  function unlockCardDetails() {
+    let pin = document.getElementById('pinInput').value;
+    if(pin.length === 4) {
+      document.getElementById('pinSection').style.display = 'none';
+      document.getElementById('detailsSection').style.display = 'block';
+    } else {
+      alert("Tanpri antre yon kòd PIN 4 chif ki valab.");
+    }
+  }
+
+  function calculateFees() {
+    let amt = parseFloat(document.getElementById('reloadAmount').value) || 0;
+    let fee = amt * 0.05; // 5% frè
+    let total = amt + fee;
+    document.getElementById('feeVal').innerText = "$" + fee.toFixed(2) + " USD";
+    document.getElementById('totalVal').innerText = "$" + total.toFixed(2) + " USD";
+  }
+
+  function openDepositModal() { closeModals(); document.getElementById('depositModal').style.display = 'flex'; }
+  function openReloadCardModal() { toggleMenu(); document.getElementById('reloadCardModal').style.display = 'flex'; }
+  function openBoostModal() { alert("Paj Boostaj Rezo Sosyo ap ouvri..."); }
+  function openSupportModal() { alert("Sèvis Kliyantè WhatsApp: +509 XXXX-XXXX"); }
+  
+  function closeModals() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+  }
+</script>
+
+</body>
+</html>
