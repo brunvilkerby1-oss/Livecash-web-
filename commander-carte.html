@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Commander une Carte</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #071a12;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+
+    /* Top Bar Navigation */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-back {
+      width: 44px;
+      height: 44px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #facc15;
+      text-decoration: none;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #facc15;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.2);
+    }
+
+    /* Banner / Card Preview */
+    .card-preview {
+      background: linear-gradient(135deg, #0f3322, #14442d);
+      border: 1.5px solid #facc15;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .card-type {
+      font-size: 13px;
+      font-weight: 800;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-brand {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 8px;
+    }
+
+    .card-info-note {
+      font-size: 12px;
+      color: #a7f3d0;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Form Styles */
+    .form-container {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 20px;
+      padding: 22px 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 16px;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+      padding-bottom: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      padding: 14px 14px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-control:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23facc15'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+      padding-right: 36px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    /* Phone Input Layout - Agrandis pou yo pi fasil */
+    .phone-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-prefix {
+      width: 42%;
+      font-size: 13px;
+      font-weight: 700;
+      color: #facc15;
+      background: #071a12;
+    }
+
+    .phone-number {
+      width: 58%;
+    }
+
+    /* KYC Upload Style */
+    .kyc-box {
+      border: 2px dashed #facc15;
+      background: rgba(7, 26, 18, 0.8);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: 0.2s;
+    }
+
+    .kyc-box:hover {
+      background: rgba(250, 204, 21, 0.08);
+    }
+
+    .kyc-box input[type="file"] {
+      display: none;
+    }
+
+    .kyc-icon {
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+
+    .kyc-text {
+      font-size: 13px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .kyc-subtext {
+      font-size: 11px;
+      color: #a7f3d0;
+      margin-top: 4px;
+    }
+
+    .file-name-display {
+      font-size: 12px;
+      color: #facc15;
+      margin-top: 8px;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 24px;
+      box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+      transition: 0.2s;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    /* MODAL POPUP POU SELFIE AVÈK PIÈS (OBLIGATWA) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #092418;
+      border: 2px solid #facc15;
+      border-radius: 20px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      text-align: center;
+      animation: popup 0.3s ease-out;
+    }
+
+    @keyframes popup {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      font-size: 12.5px;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .selfie-demo-box {
+      background: #071a12;
+      border: 1px dashed rgba(250, 204, 21, 0.4);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .selfie-demo-icon {
+      font-size: 32px;
+    }
+
+    .selfie-demo-text {
+      font-size: 11.5px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .btn-close-modal {
+      background: #1f2937;
+      color: #9ca3af;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Commander une Carte</div>
+  </div>
+
+  <!-- Aperçu Carte -->
+  <div class="card-preview">
+    <div class="card-type">LiveCash Virtual</div>
+    <div class="card-brand">VISA CASH</div>
+    <div class="card-info-note">Veuillez fournir des informations exactes et votre vérification d'identité complète (KYC) pour l'activation.</div>
+  </div>
+
+  <!-- Formulaire de commande -->
+  <form class="form-container" id="orderCardForm" onsubmit="triggerSelfieVerification(event)">
+    <div class="section-subtitle">1. Informations Personnelles</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">Prénom</label>
+        <input type="text" id="firstName" class="form-control" placeholder="Jean" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Nom</label>
+        <input type="text" id="lastName" class="form-control" placeholder="Dupont" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse Email</label>
+      <input type="email" id="email" class="form-control" placeholder="exemple@email.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe du compte</label>
+      <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+    </div>
+
+    <div class="form-group">
+      <label>Pays et Téléphone</label>
+      <div class="phone-group">
+        <select id="countryCode" class="form-control phone-prefix" onchange="syncCountrySelect()">
+          <option value="+509">🇭🇹 Haïti (+509)</option>
+          <option value="+1-US">🇺🇸 USA (+1)</option>
+          <option value="+1-CA">🇨🇦 Canada (+1)</option>
+          <option value="+1-809">🇩🇴 Rep. Dom (+1-809)</option>
+          <option value="+33">🇫🇷 France (+33)</option>
+          <option value="+55">🇧🇷 Brésil (+55)</option>
+          <option value="+56">🇨🇱 Chili (+56)</option>
+          <option value="+590">🇬🇵 Guadeloupe (+590)</option>
+          <option value="+596">🇲🇶 Martinique (+596)</option>
+          <option value="+594">🇬🇫 Guyane (+594)</option>
+          <option value="+34">🇪🇸 Espagne (+34)</option>
+          <option value="+243">🇨🇩 RDC (+243)</option>
+          <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+          <option value="+221">🇸🇳 Sénégal (+221)</option>
+          <option value="+237">🇨🇲 Cameroun (+237)</option>
+        </select>
+        <input type="tel" id="phoneNumber" class="form-control phone-number" placeholder="3700 0000" required>
+      </div>
+    </div>
+
+    <div class="section-subtitle" style="margin-top: 24px;">2. Adresse & Localisation</div>
+
+    <div class="form-group">
+      <label for="country">Pays de résidence</label>
+      <select id="country" class="form-control" required>
+        <option value="Haïti">Haïti</option>
+        <option value="États-Unis">États-Unis</option>
+        <option value="Canada">Canada</option>
+        <option value="République Dominicaine">République Dominicaine</option>
+        <option value="France">France</option>
+        <option value="Brésil">Brésil</option>
+        <option value="Chili">Chili</option>
+        <option value="Guadeloupe">Guadeloupe</option>
+        <option value="Martinique">Martinique</option>
+        <option value="Guyane Française">Guyane Française</option>
+        <option value="Espagne">Espagne</option>
+        <option value="Autre">Autre pays</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">Ville</label>
+        <input type="text" id="city" class="form-control" placeholder="Port-au-Prince" required>
+      </div>
+      <div class="form-group">
+        <label for="state">Département / État</label>
+        <input type="text" id="state" class="form-control" placeholder="Ouest" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="zipCode">Code Postal</label>
+      <input type="text" id="zipCode" class="form-control" placeholder="HT6110" required>
+    </div>
+
+    <div class="section-subtitle" style="margin-top: 24px;">3. Vérification KYC (Pièce d'identité)</div>
+
+    <!-- 1. DEVAN PIÈS LA (RECTO) -->
+    <div class="form-group">
+      <label>1. Photo Devant la Pièce (Recto) *</label>
+      <div class="kyc-box" onclick="document.getElementById('kycFrontFile').click()">
+        <div class="kyc-icon">🪪</div>
+        <div class="kyc-text">Télécharger le DEVANT de votre pièce</div>
+        <div class="kyc-subtext">Passeport, CIN ou Permis de conduire</div>
+        <div class="file-name-display" id="frontNameDisplay"></div>
+      </div>
+      <input type="file" id="kycFrontFile" accept="image/*,.pdf" onchange="handleFrontUpload(this)" required>
+    </div>
+
+    <!-- 2. DÈYÈ PIÈS LA (VERSO) - PARÈT OBLIGATWA -->
+    <div class="form-group" id="backGroup" style="display: none; animation: popup 0.3s ease-out;">
+      <label>2. Photo Dèyè la Pièce (Verso) *</label>
+      <div class="kyc-box" onclick="document.getElementById('kycBackFile').click()" style="border-color: #a7f3d0;">
+        <div class="kyc-icon">🔄</div>
+        <div class="kyc-text">Télécharger le DÈYÈ de votre pièce</div>
+        <div class="kyc-subtext">Assurez-vous que le verso est bien lisible</div>
+        <div class="file-name-display" id="backNameDisplay"></div>
+      </div>
+      <input type="file" id="kycBackFile" accept="image/*,.pdf" onchange="handleBackUpload(this)">
+    </div>
+
+    <button type="submit" class="btn-submit">Valider et Commander</button>
+  </form>
+
+  <!-- MODAL POP-UP OBLIGATWA POU SELFIE AK PIÈS LA -->
+  <div class="modal-overlay" id="selfieModal">
+    <div class="modal-card">
+      <div class="modal-title">📸 Étape Finale : Selfie de Vérification</div>
+      <div class="modal-desc">
+        Pour des raisons de sécurité, vous devez fournir un <b>Selfie de vous tenant votre pièce d'identité</b> près de votre visage.
+      </div>
+
+      <div class="selfie-demo-box">
+        <div class="selfie-demo-icon">🤳</div>
+        <div class="selfie-demo-text">
+          Tenez votre carte à côté de votre visage. Votre visage et les informations de la carte doivent être clairement visibles.
+        </div>
+      </div>
+
+      <div class="form-group" style="text-align: left;">
+        <label style="color: #facc15;">Photo Selfie avec la pièce *</label>
+        <div class="kyc-box" onclick="document.getElementById('kycSelfieFile').click()" style="background: #071a12;">
+          <div class="kyc-icon">📷</div>
+          <div class="kyc-text">Prendre ou télécharger votre Selfie</div>
+          <div class="file-name-display" id="selfieNameDisplay"></div>
+        </div>
+        <input type="file" id="kycSelfieFile" accept="image/*" onchange="handleSelfieUpload(this)">
+      </div>
+
+      <button type="button" class="btn-submit" onclick="submitFinalCardOrder()">Finaliser la commande</button>
+      <button type="button" class="btn-close-modal" onclick="closeModal()">Annuler</button>
+    </div>
+  </div>
+
+  <script>
+    // Senkronize peyi a ak kòd telefòn nan
+    function syncCountrySelect() {
+      const prefix = document.getElementById('countryCode').value;
+      const countrySelect = document.getElementById('country');
+      if (prefix === '+509') countrySelect.value = 'Haïti';
+      else if (prefix === '+1-US') countrySelect.value = 'États-Unis';
+      else if (prefix === '+1-CA') countrySelect.value = 'Canada';
+      else if (prefix === '+1-809') countrySelect.value = 'République Dominicaine';
+      else if (prefix === '+33') countrySelect.value = 'France';
+      else if (prefix === '+55') countrySelect.value = 'Brésil';
+      else if (prefix === '+56') countrySelect.value = 'Chili';
+      else if (prefix === '+590') countrySelect.value = 'Guadeloupe';
+      else if (prefix === '+596') countrySelect.value = 'Martinique';
+      else if (prefix === '+594') countrySelect.value = 'Guyane Française';
+      else if (prefix === '+34') countrySelect.value = 'Espagne';
+    }
+
+    // 1. Lè moun nan chwazi foto DEVAN an, afiche opsyon pou DÈYÈ a
+    function handleFrontUpload(input) {
+      const display = document.getElementById('frontNameDisplay');
+      const backGroup = document.getElementById('backGroup');
+      const kycBackFile = document.getElementById('kycBackFile');
+
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Devan : " + input.files[0].name;
+        backGroup.style.display = "block";
+        kycBackFile.setAttribute('required', 'required');
+      } else {
+        display.innerText = "";
+        backGroup.style.display = "none";
+        kycBackFile.removeAttribute('required');
+      }
+    }
+
+    // 2. Lè moun nan chwazi foto DÈYÈ a
+    function handleBackUpload(input) {
+      const display = document.getElementById('backNameDisplay');
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Dèyè : " + input.files[0].name;
+      } else {
+        display.innerText = "";
+      }
+    }
+
+    // 3. Lè moun nan chwazi SELFIE a
+    function handleSelfieUpload(input) {
+      const display = document.getElementById('selfieNameDisplay');
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Selfie : " + input.files[0].name;
+      } else {
+        display.innerText = "";
+      }
+    }
+
+    // Lè moun nan klike "Valider et Commander", louvri Pop-up Selfie a
+    function triggerSelfieVerification(event) {
+      event.preventDefault();
+
+      const frontFile = document.getElementById('kycFrontFile').files[0];
+      const backFile = document.getElementById('kycBackFile').files[0];
+
+      if (!frontFile || !backFile) {
+        alert("Veuillez télécharger le DEVANT et le DÈYÈ de votre pièce d'identité.");
+        return;
+      }
+
+      // Louvri Pop-up Selfie a
+      document.getElementById('selfieModal').style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById('selfieModal').style.display = "none";
+    }
+
+    // Finalize ak sove tout done yo
+    function submitFinalCardOrder() {
+      const selfieFile = document.getElementById('kycSelfieFile').files[0];
+
+      if (!selfieFile) {
+        alert("⚠️ Le Selfie avec votre pièce d'identité est OBLIGATOIRE pour continuer !");
+        return;
+      }
+
+      const cardData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('countryCode').value + ' ' + document.getElementById('phoneNumber').value,
+        country: document.getElementById('country').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        zipCode: document.getElementById('zipCode').value,
+        kycFrontUploaded: true,
+        kycBackUploaded: true,
+        kycSelfieUploaded: true,
+        status: "En attente de validation KYC"
+      };
+
+      // Sove done yo nan localStorage
+      localStorage.setItem('cardOrderInfo', JSON.stringify(cardData));
+
+      alert("🎉 Félicitations ! Votre demande de carte ainsi que vos pièces d'identité (Devant, Dèyè et Selfie) ont été soumises avec succès. Activation sous peu !");
+      
+      closeModal();
+      window.location.href = "carte.html";
+    }
+  </script>
+
+</body>
+</html>
