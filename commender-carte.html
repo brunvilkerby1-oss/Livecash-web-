@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Commander une Carte</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #051a10;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* Top Bar Navigation */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0d2d1d;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #facc15;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .page-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* Banner / Card Preview */
+    .card-preview {
+      background: linear-gradient(135deg, #0d2d1d, #123d28);
+      border: 1px solid #facc15;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .card-type {
+      font-size: 12px;
+      font-weight: 800;
+      color: #facc15;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-brand {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 6px;
+    }
+
+    .card-info-note {
+      font-size: 11.5px;
+      color: #a7f3d0;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* Form Styles */
+    .form-container {
+      background: #0d2d1d;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+      padding-bottom: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #051a10;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: #facc15;
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23facc15'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
+      padding-right: 32px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    /* Phone Input Layout */
+    .phone-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .phone-prefix {
+      width: 42%;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #facc15;
+    }
+
+    .phone-number {
+      width: 58%;
+    }
+
+    /* KYC Upload Boxes */
+    .kyc-box {
+      border: 2px dashed #facc15;
+      background: #051a10;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .kyc-box input[type="file"] {
+      display: none;
+    }
+
+    .kyc-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .kyc-text {
+      font-size: 12.5px;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .kyc-subtext {
+      font-size: 10.5px;
+      color: #a7f3d0;
+      margin-top: 2px;
+    }
+
+    .file-name-display {
+      font-size: 11.5px;
+      color: #facc15;
+      margin-top: 6px;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    .kyc-step-block {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #051a10;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #0d2d1d;
+      border-top: 1px solid rgba(250, 204, 21, 0.25);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #8fa89b;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-item.active {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header ak Bouton Retounen -->
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Commander une Carte</div>
+  </div>
+
+  <!-- Aperçu Carte -->
+  <div class="card-preview">
+    <div class="card-type">LiveCash Virtual</div>
+    <div class="card-brand">VISA CASH</div>
+    <div class="card-info-note">Remplissez le formulaire et complétez la vérification KYC pour activer votre carte.</div>
+  </div>
+
+  <!-- Formulaire de commande -->
+  <form class="form-container" id="orderCardForm" onsubmit="handleCardOrder(event)">
+    <div class="section-subtitle">1. Informations Personnelles</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">Prénom</label>
+        <input type="text" id="firstName" class="form-control" placeholder="Jean" required>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Nom</label>
+        <input type="text" id="lastName" class="form-control" placeholder="Dupont" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse Email</label>
+      <input type="email" id="email" class="form-control" placeholder="exemple@email.com" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe du compte</label>
+      <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+    </div>
+
+    <div class="form-group">
+      <label>Pays et Téléphone</label>
+      <div class="phone-group">
+        <select id="countryCode" class="form-control phone-prefix" onchange="syncCountrySelect()">
+          <option value="+509">🇭🇹 Haïti (+509)</option>
+          <option value="+1-US">🇺🇸 USA (+1)</option>
+          <option value="+1-CA">🇨🇦 Canada (+1)</option>
+          <option value="+1-809">🇩🇴 Rep. Dom (+1-809)</option>
+          <option value="+33">🇫🇷 France (+33)</option>
+          <option value="+55">🇧🇷 Brésil (+55)</option>
+          <option value="+56">🇨🇱 Chili (+56)</option>
+          <option value="+590">🇬🇵 Guadeloupe (+590)</option>
+          <option value="+596">🇲🇶 Martinique (+596)</option>
+          <option value="+594">🇬🇫 Guyane (+594)</option>
+          <option value="+34">🇪🇸 Espagne (+34)</option>
+          <option value="+243">🇨🇩 RDC (+243)</option>
+          <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+          <option value="+221">🇸🇳 Sénégal (+221)</option>
+          <option value="+237">🇨🇲 Cameroun (+237)</option>
+        </select>
+        <input type="tel" id="phoneNumber" class="form-control phone-number" placeholder="3700 0000" required>
+      </div>
+    </div>
+
+    <div class="section-subtitle" style="margin-top: 22px;">2. Adresse & Localisation</div>
+
+    <div class="form-group">
+      <label for="country">Pays de résidence</label>
+      <select id="country" class="form-control" required>
+        <option value="Haïti">Haïti</option>
+        <option value="États-Unis">États-Unis</option>
+        <option value="Canada">Canada</option>
+        <option value="République Dominicaine">République Dominicaine</option>
+        <option value="France">France</option>
+        <option value="Brésil">Brésil</option>
+        <option value="Chili">Chili</option>
+        <option value="Guadeloupe">Guadeloupe</option>
+        <option value="Martinique">Martinique</option>
+        <option value="Guyane Française">Guyane Française</option>
+        <option value="Espagne">Espagne</option>
+        <option value="RDC">RDC (Congo)</option>
+        <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+        <option value="Sénégal">Sénégal</option>
+        <option value="Cameroun">Cameroun</option>
+        <option value="Autre">Autre pays</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="city">Ville</label>
+        <input type="text" id="city" class="form-control" placeholder="Port-au-Prince" required>
+      </div>
+      <div class="form-group">
+        <label for="state">Département / État</label>
+        <input type="text" id="state" class="form-control" placeholder="Ouest" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="zipCode">Code Postal</label>
+      <input type="text" id="zipCode" class="form-control" placeholder="HT6110" required>
+    </div>
+
+    <div class="section-subtitle" style="margin-top: 22px;">3. Vérification KYC</div>
+
+    <!-- CHWA TIP PIÈS D'IDENTITÉ -->
+    <div class="form-group">
+      <label for="docType" style="color: #facc15;">Type de pièce d'identité *</label>
+      <select id="docType" class="form-control" onchange="updateDocLabels()" required>
+        <option value="CIN">Carte d'identité Nationale (CIN)</option>
+        <option value="Passeport">Passeport</option>
+        <option value="Permis">Permis de conduire</option>
+      </select>
+    </div>
+
+    <!-- ETAPE 1: DEVAN (RECTO) -->
+    <div class="form-group kyc-step-block">
+      <label id="frontLabel">1. Photo Devant la Pièce (Recto) *</label>
+      <div class="kyc-box" onclick="document.getElementById('kycFrontFile').click()">
+        <div class="kyc-icon">🪪</div>
+        <div class="kyc-text" id="frontBoxText">Télécharger le DEVANT de la carte</div>
+        <div class="kyc-subtext">Format image ou PDF</div>
+        <div class="file-name-display" id="frontNameDisplay"></div>
+      </div>
+      <input type="file" id="kycFrontFile" accept="image/*,.pdf" onchange="handleFrontUpload(this)" required>
+    </div>
+
+    <!-- ETAPE 2: DÈYÈ (VERSO) - PARÈT OTOMATIK APRE DEVAN -->
+    <div class="form-group kyc-step-block" id="backGroup" style="display: none;">
+      <label id="backLabel">2. Photo Dèyè la Pièce (Verso) *</label>
+      <div class="kyc-box" onclick="document.getElementById('kycBackFile').click()">
+        <div class="kyc-icon">🔄</div>
+        <div class="kyc-text" id="backBoxText">Télécharger le DÈYÈ de la carte</div>
+        <div class="kyc-subtext">Assurez-vous que le verso est lisible</div>
+        <div class="file-name-display" id="backNameDisplay"></div>
+      </div>
+      <input type="file" id="kycBackFile" accept="image/*,.pdf" onchange="handleBackUpload(this)">
+    </div>
+
+    <!-- ETAPE 3: SELFIE VIZAJ AK KAMERA OTOMATIK - PARÈT OTOMATIK APRE DÈYÈ -->
+    <div class="form-group kyc-step-block" id="selfieGroup" style="display: none;">
+      <label style="color: #facc15;">3. Selfie avec la pièce près du visage *</label>
+      <div class="kyc-box" onclick="document.getElementById('kycSelfieFile').click()" style="border-color: #a7f3d0;">
+        <div class="kyc-icon">🤳</div>
+        <div class="kyc-text">Prendre un Selfie avec votre pièce</div>
+        <div class="kyc-subtext">Ouvre directement la caméra frontale</div>
+        <div class="file-name-display" id="selfieNameDisplay"></div>
+      </div>
+      <input type="file" id="kycSelfieFile" accept="image/*" capture="user" onchange="handleSelfieUpload(this)">
+    </div>
+
+    <button type="submit" class="btn-submit">Valider et Commander</button>
+  </form>
+
+  <!-- Bouton Navigasyon Anba Yo -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="cartes.html" class="nav-item active">
+      <span class="nav-icon">💳</span>
+      <span>Cartes</span>
+    </a>
+    <a href="services.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Services</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <span class="nav-icon">👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+  <script>
+    // Senkronize peyi rezidans ak kòd telefòn nan
+    function syncCountrySelect() {
+      const prefix = document.getElementById('countryCode').value;
+      const countrySelect = document.getElementById('country');
+      
+      if (prefix === '+509') countrySelect.value = 'Haïti';
+      else if (prefix === '+1-US') countrySelect.value = 'États-Unis';
+      else if (prefix === '+1-CA') countrySelect.value = 'Canada';
+      else if (prefix === '+1-809') countrySelect.value = 'République Dominicaine';
+      else if (prefix === '+33') countrySelect.value = 'France';
+      else if (prefix === '+55') countrySelect.value = 'Brésil';
+      else if (prefix === '+56') countrySelect.value = 'Chili';
+      else if (prefix === '+590') countrySelect.value = 'Guadeloupe';
+      else if (prefix === '+596') countrySelect.value = 'Martinique';
+      else if (prefix === '+594') countrySelect.value = 'Guyane Française';
+      else if (prefix === '+34') countrySelect.value = 'Espagne';
+      else if (prefix === '+243') countrySelect.value = 'RDC';
+      else if (prefix === '+225') countrySelect.value = 'Côte d\'Ivoire';
+      else if (prefix === '+221') countrySelect.value = 'Sénégal';
+      else if (prefix === '+237') countrySelect.value = 'Cameroun';
+    }
+
+    // Chanje ekriti bwat yo selon kalite piès ki chwazi a
+    function updateDocLabels() {
+      const docType = document.getElementById('docType').value;
+      const frontLabel = document.getElementById('frontLabel');
+      const frontBoxText = document.getElementById('frontBoxText');
+      const backLabel = document.getElementById('backLabel');
+
+      if (docType === 'Passeport') {
+        frontLabel.innerText = "1. Photo de la page principale du Passeport *";
+        frontBoxText.innerText = "Télécharger la photo du Passeport";
+        backLabel.innerText = "2. Photo de la page de signature (Optionnel)";
+      } else if (docType === 'Permis') {
+        frontLabel.innerText = "1. Photo Devant du Permis (Recto) *";
+        frontBoxText.innerText = "Télécharger le DEVANT du permis";
+        backLabel.innerText = "2. Photo Dèyè du Permis (Verso) *";
+      } else {
+        frontLabel.innerText = "1. Photo Devant la Carte CIN (Recto) *";
+        frontBoxText.innerText = "Télécharger le DEVANT de la carte CIN";
+        backLabel.innerText = "2. Photo Dèyè la Carte CIN (Verso) *";
+      }
+    }
+
+    // 1. Lè devan an fin chwazi -> Ouvri bwat dèyè a
+    function handleFrontUpload(input) {
+      const display = document.getElementById('frontNameDisplay');
+      const backGroup = document.getElementById('backGroup');
+      const kycBackFile = document.getElementById('kycBackFile');
+
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Photo 1 : " + input.files[0].name;
+        backGroup.style.display = "block";
+        kycBackFile.setAttribute('required', 'required');
+      }
+    }
+
+    // 2. Lè dèyè a fin chwazi -> Ouvri bwat selfie ak kamera a
+    function handleBackUpload(input) {
+      const display = document.getElementById('backNameDisplay');
+      const selfieGroup = document.getElementById('selfieGroup');
+      const kycSelfieFile = document.getElementById('kycSelfieFile');
+
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Photo 2 : " + input.files[0].name;
+        selfieGroup.style.display = "block";
+        kycSelfieFile.setAttribute('required', 'required');
+      }
+    }
+
+    // 3. Lè selfie an fin fèt
+    function handleSelfieUpload(input) {
+      const display = document.getElementById('selfieNameDisplay');
+      if (input.files && input.files[0]) {
+        display.innerText = "✅ Selfie : " + input.files[0].name;
+      }
+    }
+
+    // Lè yo soumèt fòm lan
+    function handleCardOrder(event) {
+      event.preventDefault();
+
+      const frontFile = document.getElementById('kycFrontFile').files[0];
+      const backFile = document.getElementById('kycBackFile').files[0];
+      const selfieFile = document.getElementById('kycSelfieFile').files[0];
+
+      if (!frontFile || !backFile || !selfieFile) {
+        alert("⚠️ Veuillez fournir toutes les 3 étapes KYC (Devant, Dèyè ak Selfie).");
+        return;
+      }
+
+      const cardData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('countryCode').value + ' ' + document.getElementById('phoneNumber').value,
+        country: document.getElementById('country').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        zipCode: document.getElementById('zipCode').value,
+        documentType: document.getElementById('docType').value,
+        kycCompleted: true
+      };
+
+      localStorage.setItem('cardOrderInfo', JSON.stringify(cardData));
+      alert("🎉 Demande de carte soumise avec succès ! Mode KYC complet.");
+      window.location.href = "cartes.html";
+    }
+  </script>
+
+</body>
+</html>
