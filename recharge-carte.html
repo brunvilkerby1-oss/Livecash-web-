@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Mes Cartes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 440px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Top Header */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Solde Total Header */
+    .solde-container {
+      margin-bottom: 20px;
+    }
+
+    .solde-main {
+      font-size: 32px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solde-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Action Buttons (Ajouter / Retirer) */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+
+    .btn-action.primary {
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .btn-action.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* KAT LA: Koulè Cho (Warm Neon Gradient) ak Fòm Kout Nòmal */
+    .section-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+    }
+
+    .visa-card {
+      width: 100%;
+      aspect-ratio: 1.58 / 1; /* Fòm kout nòmal kat bankè */
+      background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 50%, #8a2be2 100%);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 15px 30px rgba(255, 65, 108, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .visa-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chip-gold {
+      width: 36px;
+      height: 26px;
+      background: linear-gradient(135deg, #fceabb, #f8b500);
+      border-radius: 6px;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 900;
+      font-style: italic;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+
+    .brand-title span {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      color: #ffe5ec;
+      margin-left: 2px;
+    }
+
+    .card-balance-display {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-holder-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* POPUP MODAL (RECHARGER LA CARTE) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      color: #0f172a;
+      width: 100%;
+      max-width: 440px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px 20px 32px 20px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-out;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    /* Flow Input Boxes (De votre solde -> À la carte) */
+    .transfer-card-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .box-info-side {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .flag-icon {
+      font-size: 24px;
+    }
+
+    .box-title-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 2px;
+    }
+
+    .currency-label {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .input-val-side {
+      text-align: right;
+    }
+
+    .input-val-side input {
+      width: 110px;
+      border: none;
+      background: transparent;
+      font-size: 22px;
+      font-weight: 800;
+      text-align: right;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .sub-info-text {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    /* Divider Arrow Circle */
+    .arrow-divider {
+      position: relative;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -10px 0;
+      z-index: 5;
+    }
+
+    .arrow-circle {
+      width: 34px;
+      height: 34px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+    }
+
+    .min-note {
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 16px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Confirm Modal Button */
+    .btn-modal-submit {
+      width: 100%;
+      background: #e2e8f0;
+      color: #94a3b8;
+      border: none;
+      padding: 16px;
+      border-radius: 18px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-modal-submit.active-btn {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Cartes</div>
+  </div>
+
+  <!-- Solde total -->
+  <div class="solde-container">
+    <div class="solde-main" id="totalCardSolde">$497.02</div>
+    <div class="solde-subtitle">Solde total des cartes en USD</div>
+  </div>
+
+  <!-- Bouton Ajouter un solde -->
+  <div class="action-buttons">
+    <button class="btn-action primary" onclick="openModal()">
+      ↑ Ajouter un solde
+    </button>
+    <button class="btn-action secondary">
+      ↓ Retirer
+    </button>
+  </div>
+
+  <div class="section-label">Virtual card</div>
+
+  <!-- KAT LA (VISA CASH - Koulè Cho Warm Gradient & Fòm Kout) -->
+  <div class="visa-card" onclick="openModal()">
+    <div class="card-head">
+      <div class="chip-gold"></div>
+      <div class="brand-title">VISA <span>CASH</span></div>
+    </div>
+    
+    <div>
+      <div style="font-size: 11px; opacity: 0.8; font-weight: 600;">SOLDE ACTUEL</div>
+      <div class="card-balance-display" id="cardBalanceText">$497.02 USD</div>
+    </div>
+
+    <div class="card-footer">
+      <div class="card-holder-name" id="cardHolderText">KERBY BRUNVIL</div>
+      <div style="font-size: 12px; font-weight: 700; opacity: 0.9;">•••• 3592</div>
+    </div>
+  </div>
+
+  <!-- FENÈT MODAL POPUP (Recharger la carte) -->
+  <div class="modal-overlay" id="rechargeModal" onclick="closeModalOnOuter(event)">
+    <div class="modal-content">
+      <div class="modal-header">Recharger la carte</div>
+
+      <!-- 1. De votre solde (LiveCash) -->
+      <div class="transfer-card-box">
+        <div class="box-info-side">
+          <span class="flag-icon">🇺🇸</span>
+          <div>
+            <div class="box-title-text">De votre solde</div>
+            <div class="currency-label">USD</div>
+          </div>
+        </div>
+        <div class="input-val-side">
+          <input type="number" id="inputAmount" placeholder="0.00" oninput="calculateTransfer()">
+          <div class="sub-info-text" id="livecashAvailable">Disponible: $500.00</div>
+        </div>
+      </div>
+
+      <!-- Ti flèch ble nan mitan an -->
+      <div class="arrow-divider">
+        <div class="arrow-circle">↓</div>
+      </div>
+
+      <!-- 2. À la carte (Visa Cash) -->
+      <div class="transfer-card-box">
+        <div class="box-info-side">
+          <span class="flag-icon">💳</span>
+          <div>
+            <div class="box-title-text">À la carte</div>
+            <div class="currency-label">VISA CASH</div>
+          </div>
+        </div>
+        <div class="input-val-side">
+          <div style="font-size: 22px; font-weight: 800; color: #0f172a;" id="netToCard">$0.00</div>
+          <div class="sub-info-text">Frais: 2.98 USDT</div>
+        </div>
+      </div>
+
+      <div class="min-note">
+        <span>💳</span> Montant minimum $1.00
+      </div>
+
+      <!-- Bouton Accepter / Confirmer -->
+      <button class="btn-modal-submit" id="btnConfirm" onclick="confirmRecharge()">Accepter</button>
+    </div>
+  </div>
+
+  <script>
+    const FEE = 2.98;
+
+    function openModal() {
+      document.getElementById('rechargeModal').classList.add('active');
+    }
+
+    function closeModalOnOuter(e) {
+      if (e.target.id === 'rechargeModal') {
+        document.getElementById('rechargeModal').classList.remove('active');
+      }
+    }
+
+    function calculateTransfer() {
+      const val = parseFloat(document.getElementById('inputAmount').value) || 0;
+      const btn = document.getElementById('btnConfirm');
+      const netDisplay = document.getElementById('netToCard');
+
+      if (val >= 1.00) {
+        btn.classList.add('active-btn');
+        const net = Math.max(0, val - FEE).toFixed(2);
+        netDisplay.innerText = `$${net}`;
+      } else {
+        btn.classList.remove('active-btn');
+        netDisplay.innerText = `$0.00`;
+      }
+    }
+
+    function confirmRecharge() {
+      const val = parseFloat(document.getElementById('inputAmount').value);
+      if (!val || val < 1.00) {
+        alert("Veuillez entrer un montant d'au moins $1.00 USD.");
+        return;
+      }
+
+      const net = Math.max(0, val - FEE).toFixed(2);
+      alert(`Recharge effectuée avec succès ! $${net} USD ont été crédités sur votre carte VISA CASH.`);
+      document.getElementById('rechargeModal').classList.remove('active');
+    }
+  </script>
+
+</body>
+</html>
