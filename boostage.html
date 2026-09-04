@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Booster Sèvis</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #051a10;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* Top Bar Header */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0d2d1d;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #facc15;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .page-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* Banner Banner Header */
+    .booster-banner {
+      background: linear-gradient(135deg, #0d2d1d, #123d28);
+      border: 1px solid #facc15;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+
+    .booster-banner h2 {
+      font-size: 18px;
+      color: #facc15;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .booster-banner p {
+      font-size: 12px;
+      color: #a7f3d0;
+      line-height: 1.4;
+    }
+
+    /* Step 1: Grid Kategori Rezo Sosyal Yo */
+    .section-subtitle {
+      font-size: 14px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+      padding-bottom: 6px;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .platform-card {
+      background: #0d2d1d;
+      border: 1.5px solid rgba(250, 204, 21, 0.25);
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .platform-card:hover, .platform-card.active {
+      border-color: #facc15;
+      background: #123d28;
+      box-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .platform-icon {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .platform-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Form Container */
+    .form-container {
+      background: #0d2d1d;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 18px;
+      display: none; /* Affiche sèlman lè yo klike sou yon rezo */
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #051a10;
+      border: 1px solid rgba(250, 204, 21, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: #facc15;
+    }
+
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23facc15'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 18px;
+      padding-right: 32px;
+    }
+
+    /* Mesaj ak Kalkil Pri */
+    .price-summary {
+      background: #051a10;
+      border: 1px dashed #facc15;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .price-label {
+      font-size: 12px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .price-value {
+      font-size: 16px;
+      color: #facc15;
+      font-weight: 800;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 11.5px;
+      font-weight: 700;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #051a10;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 18px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #4b5563;
+      color: #9ca3af;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #0d2d1d;
+      border-top: 1px solid rgba(250, 204, 21, 0.25);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #8fa89b;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-item.active {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">LiveCash Booster</div>
+  </div>
+
+  <!-- Banner -->
+  <div class="booster-banner">
+    <h2>🚀 Boostez vos Réseaux</h2>
+    <p>Sélectionnez une plateforme ci-dessous pour augmenter vos Vues, Likes, Abonnés et Commentaires en quelques clics.</p>
+  </div>
+
+  <!-- Kategori Rezo Sosyal Yo -->
+  <div class="section-subtitle">1. Choisissez une plateforme</div>
+  <div class="platforms-grid">
+    <div class="platform-card" onclick="selectPlatform('tiktok', this)">
+      <div class="platform-icon">🎵</div>
+      <div class="platform-name">TikTok</div>
+    </div>
+    <div class="platform-card" onclick="selectPlatform('youtube', this)">
+      <div class="platform-icon">▶️</div>
+      <div class="platform-name">YouTube</div>
+    </div>
+    <div class="platform-card" onclick="selectPlatform('facebook', this)">
+      <div class="platform-icon">📘</div>
+      <div class="platform-name">Facebook</div>
+    </div>
+    <div class="platform-card" onclick="selectPlatform('instagram', this)">
+      <div class="platform-icon">📸</div>
+      <div class="platform-name">Instagram</div>
+    </div>
+  </div>
+
+  <!-- Formulaire d'Achat (Parèt sèlman lè yo klike sou yon rezo) -->
+  <form class="form-container" id="boosterForm" onsubmit="handleBoosterOrder(event)">
+    <div class="section-subtitle" id="selectedPlatformTitle">2. Configuration du Boost</div>
+
+    <!-- Lis Sèvis ak ID yo -->
+    <div class="form-group">
+      <label for="serviceSelect">Service disponible *</label>
+      <select id="serviceSelect" class="form-control" onchange="calculatePrice()" required>
+        <!-- Liste dynamique chargée par JS -->
+      </select>
+    </div>
+
+    <!-- Lien (Lien vidéo / compte) -->
+    <div class="form-group">
+      <label for="targetLink">Lien (URL de la vidéo / du profil) *</label>
+      <input type="url" id="targetLink" class="form-control" placeholder="https://..." required>
+    </div>
+
+    <!-- Quantité (Minimum 1000) -->
+    <div class="form-group">
+      <label for="quantityInput">Quantité (Minimum : 1,000) *</label>
+      <input type="number" id="quantityInput" class="form-control" placeholder="Ex: 1000" min="1000" oninput="validateAndCalculate()" required>
+      <div class="error-msg" id="qtyError">⚠️ La quantité minimale autorisée est de 1,000.</div>
+    </div>
+
+    <!-- Kalkil Pri Total -->
+    <div class="price-summary">
+      <span class="price-label">Prix Total estimé :</span>
+      <span class="price-value" id="totalPriceDisplay">0.00 $</span>
+    </div>
+
+    <button type="submit" class="btn-submit" id="btnSubmit" disabled>Passer la Commande</button>
+  </form>
+
+  <!-- Bottom Nav Bar -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="cartes.html" class="nav-item">
+      <span class="nav-icon">💳</span>
+      <span>Cartes</span>
+    </a>
+    <a href="services.html" class="nav-item active">
+      <span class="nav-icon">🚀</span>
+      <span>Services</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <span class="nav-icon">👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+  <script>
+    // Baz de done Sèvis ak ID ak Pri baz yo (Prix pour 1000 uniti)
+    const servicesData = {
+      tiktok: [
+        { id: "TK-01", name: "[ID: TK-01] TikTok Views (Vues Vitesse Éclair)", ratePer1000: 0.50 },
+        { id: "TK-02", name: "[ID: TK-02] TikTok Likes (J'aime réels)", ratePer1000: 1.80 },
+        { id: "TK-03", name: "[ID: TK-03] TikTok Followers (Abonnés)", ratePer1000: 4.50 },
+        { id: "TK-04", name: "[ID: TK-04] TikTok Comments (Commentaires personnalisés)", ratePer1000: 5.00 }
+      ],
+      youtube: [
+        { id: "YT-01", name: "[ID: YT-01] YouTube Views (Vues Haute Qualité)", ratePer1000: 2.20 },
+        { id: "YT-02", name: "[ID: YT-02] YouTube Likes (J'aime)", ratePer1000: 3.00 },
+        { id: "YT-03", name: "[ID: YT-03] YouTube Subscribers (Abonnés)", ratePer1000: 12.00 },
+        { id: "YT-04", name: "[ID: YT-04] YouTube Comments (Commentaires)", ratePer1000: 8.00 }
+      ],
+      facebook: [
+        { id: "FB-01", name: "[ID: FB-01] Facebook Post Likes / Reactions", ratePer1000: 1.50 },
+        { id: "FB-02", name: "[ID: FB-02] Facebook Page Followers (Abonnés Page)", ratePer1000: 5.50 },
+        { id: "FB-03", name: "[ID: FB-03] Facebook Video Views (Vues Vidéo)", ratePer1000: 1.00 },
+        { id: "FB-04", name: "[ID: FB-04] Facebook Comments (Commentaires)", ratePer1000: 6.00 }
+      ],
+      instagram: [
+        { id: "IG-01", name: "[ID: IG-01] Instagram Reel / Post Views", ratePer1000: 0.40 },
+        { id: "IG-02", name: "[ID: IG-02] Instagram Likes (J'aime)", ratePer1000: 1.20 },
+        { id: "IG-03", name: "[ID: IG-03] Instagram Followers (Abonnés)", ratePer1000: 3.80 },
+        { id: "IG-04", name: "[ID: IG-04] Instagram Comments (Commentaires)", ratePer1000: 5.50 }
+      ]
+    };
+
+    let currentPlatform = '';
+
+    // Lè moun nan klike sou yon rezo sosyal
+    function selectPlatform(platformKey, element) {
+      currentPlatform = platformKey;
+
+      // Mete kouvèti active sou kat ki klike a
+      document.querySelectorAll('.platform-card').forEach(card => card.classList.remove('active'));
+      element.classList.add('active');
+
+      // Chanje tit la
+      const platformNames = { tiktok: 'TikTok', youtube: 'YouTube', facebook: 'Facebook', instagram: 'Instagram' };
+      document.getElementById('selectedPlatformTitle').innerText = '2. Boost ' + platformNames[platformKey];
+
+      // Rempli opsyon sèvis yo
+      const serviceSelect = document.getElementById('serviceSelect');
+      serviceSelect.innerHTML = '';
+
+      servicesData[platformKey].forEach(srv => {
+        const option = document.createElement('option');
+        option.value = srv.ratePer1000;
+        option.setAttribute('data-id', srv.id);
+        option.innerText = srv.name;
+        serviceSelect.appendChild(option);
+      });
+
+      // Afiche fòm nan
+      document.getElementById('boosterForm').style.display = 'block';
+      validateAndCalculate();
+    }
+
+    // Validasyon Minimum 1,000 ak Kalkil Pri
+    function validateAndCalculate() {
+      const qtyInput = document.getElementById('quantityInput');
+      const qty = parseInt(qtyInput.value) || 0;
+      const errorMsg = document.getElementById('qtyError');
+      const btnSubmit = document.getElementById('btnSubmit');
+
+      if (qty < 1000) {
+        errorMsg.style.display = 'block';
+        btnSubmit.disabled = true;
+        document.getElementById('totalPriceDisplay').innerText = '0.00 $';
+      } else {
+        errorMsg.style.display = 'none';
+        btnSubmit.disabled = false;
+        calculatePrice();
+      }
+    }
+
+    // Kalkile pri presi an tan reyèl
+    function calculatePrice() {
+      const qty = parseInt(document.getElementById('quantityInput').value) || 0;
+      if (qty < 1000) return;
+
+      const ratePer1000 = parseFloat(document.getElementById('serviceSelect').value) || 0;
+      const total = (qty / 1000) * ratePer1000;
+
+      document.getElementById('totalPriceDisplay').innerText = total.toFixed(2) + ' $';
+    }
+
+    // Soumèt Komand la
+    function handleBoosterOrder(event) {
+      event.preventDefault();
+
+      const qty = parseInt(document.getElementById('quantityInput').value);
+      if (qty < 1000) {
+        alert("⚠️ Le minimum obligatoire est de 1,000 !");
+        return;
+      }
+
+      const select = document.getElementById('serviceSelect');
+      const selectedOption = select.options[select.selectedIndex];
+
+      const orderData = {
+        platform: currentPlatform,
+        serviceId: selectedOption.getAttribute('data-id'),
+        serviceName: selectedOption.text,
+        targetUrl: document.getElementById('targetLink').value,
+        quantity: qty,
+        totalPrice: document.getElementById('totalPriceDisplay').innerText,
+        date: new Date().toLocaleString()
+      };
+
+      localStorage.setItem('lastBoosterOrder', JSON.stringify(orderData));
+      alert("🎉 Votre commande de boost (" + orderData.serviceId + ") a été enregistrée avec succès !");
+      document.getElementById('boosterForm').reset();
+      document.getElementById('totalPriceDisplay').innerText = '0.00 $';
+      document.getElementById('btnSubmit').disabled = true;
+    }
+  </script>
+</body>
+</html>
