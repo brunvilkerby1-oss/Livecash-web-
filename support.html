@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Support Client</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+    body { background-color: #051a10; color: #ffffff; padding: 16px; max-width: 480px; margin: 0 auto; min-height: 100vh; padding-bottom: 90px; }
+
+    .top-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .btn-back { width: 42px; height: 42px; background: #0d2d1d; border: 1px solid #facc15; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #facc15; text-decoration: none; font-weight: 800; }
+    .page-title { font-size: 19px; font-weight: 800; color: #facc15; }
+
+    .support-card {
+      background: #0d2d1d;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .support-card h3 { font-size: 16px; color: #facc15; margin-bottom: 8px; font-weight: 800; }
+    .support-card p { font-size: 12.5px; color: #a7f3d0; line-height: 1.5; margin-bottom: 16px; }
+
+    .support-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #051a10;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 12px;
+      padding: 14px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #0d2d1d; border-top: 1px solid rgba(250, 204, 21, 0.25); display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8fa89b; font-size: 10px; font-weight: 600; }
+    .nav-item.active { color: #facc15; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Aide & Support Client</div>
+  </div>
+
+  <div class="support-card">
+    <h3>🎧 Aide & Support Client</h3>
+    <p>Besoin d'assistance avec votre compte, vos cartes ou vos services de boostage ? Contactez notre équipe directement :</p>
+
+    <a href="https://wa.me/50900000000" target="_blank" class="support-link">
+      <span>📲 Support WhatsApp</span>
+      <span style="color: #facc15;">Contacter →</span>
+    </a>
+
+    <a href="https://t.me/LiveCashSupport" target="_blank" class="support-link">
+      <span>✈️ Canal Telegram</span>
+      <span style="color: #facc15;">Rejoindre →</span>
+    </a>
+
+    <a href="mailto:support@livecash.com" class="support-link">
+      <span>✉️ Support par Email</span>
+      <span style="color: #facc15;">Envoyer →</span>
+    </a>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="cartes.html" class="nav-item">
+      <span class="nav-icon">💳</span>
+      <span>Cartes</span>
+    </a>
+    <a href="boostage.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Boost</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <span class="nav-icon">👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+</body>
+</html>
