@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Dépôt</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #071a12;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* Top Bar Header */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      color: #facc15;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* Container Card */
+    .card-box {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: #a7f3d0;
+      margin-bottom: 20px;
+    }
+
+    /* Opsyon Peman Yo */
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pay-option {
+      background: #071a12;
+      border: 2px solid rgba(250, 204, 21, 0.2);
+      border-radius: 12px;
+      padding: 12px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .pay-option.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .pay-icon {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .pay-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Bwat Detay Peman */
+    .payment-details {
+      background: rgba(7, 26, 18, 0.7);
+      border: 1px dashed #facc15;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-weight: 800;
+      color: #facc15;
+      word-break: break-all;
+      text-align: right;
+    }
+
+    .btn-copy {
+      background: #facc15;
+      color: #071a12;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    .warning-text {
+      font-size: 11px;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border-left: 3px solid #fbbf24;
+    }
+
+    /* Fòmilè Konfimasyon */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 10px;
+      padding: 12px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .form-group input[type="file"] {
+      padding: 8px;
+      background: #071a12;
+      cursor: pointer;
+    }
+
+    .form-group input:focus {
+      border-color: #facc15;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #092418;
+      border-top: 1px solid rgba(250, 204, 21, 0.3);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-item.active {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="top-header">
+    <div class="brand-section">
+      <a href="index.html" class="back-btn">←</a>
+      <div class="logo-text">Dépôt LiveCash</div>
+    </div>
+  </div>
+
+  <div class="card-box">
+    <div class="card-title">📥 Recharger votre compte</div>
+    <div class="card-subtitle">Choisissez votre moyen de paiement et effectuez le transfert.</div>
+
+    <!-- Choix Moyen de Paiement -->
+    <div class="payment-grid">
+      <div class="pay-option active" id="opt-natcash" onclick="selectPayment('natcash')">
+        <div class="pay-icon">📲</div>
+        <div class="pay-title">Natcash</div>
+      </div>
+      <div class="pay-option" id="opt-moncash" onclick="selectPayment('moncash')">
+        <div class="pay-icon">💸</div>
+        <div class="pay-title">MonCash</div>
+      </div>
+      <div class="pay-option" id="opt-crypto" onclick="selectPayment('crypto')">
+        <div class="pay-icon">🪙</div>
+        <div class="pay-title">USDT BEP20</div>
+      </div>
+    </div>
+
+    <!-- Dynamic Payment Info Box -->
+    <div class="payment-details" id="paymentDetails">
+      <!-- M ap chanje kontni sa ak Javascript soti nan fòm ki chwazi a -->
+    </div>
+
+    <!-- Formulaire de confirmation -->
+    <form id="rechargeForm" onsubmit="submitRecharge(event)">
+      <div class="form-group">
+        <label id="amountLabel">Montant déposé (HTG)</label>
+        <input type="number" id="depositAmount" placeholder="Entrez le montant" required min="10">
+      </div>
+
+      <div class="form-group">
+        <label id="txidLabel">Numéro de Transaction / TxID</label>
+        <input type="text" id="depositTxID" placeholder="Entrez le code de confirmation / TxID" required>
+      </div>
+
+      <!-- Bouton Attachement Preuve -->
+      <div class="form-group">
+        <label>📎 Attacher la preuve de paiement (Capture d'écran)</label>
+        <input type="file" id="depositProof" accept="image/*">
+      </div>
+
+      <button type="submit" class="btn-submit">Soumettre le Dépôt</button>
+    </form>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="carte.html" class="nav-item">
+      <span class="nav-icon">💳</span>
+      <span>Carte</span>
+    </a>
+    <a href="boostage.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Boost</span>
+    </a>
+    <a href="transactions.html" class="nav-item">
+      <span class="nav-icon">💸</span>
+      <span>Transfert</span>
+    </a>
+  </div>
+
+  <script>
+    let currentMethod = 'natcash';
+
+    const paymentInfo = {
+      natcash: {
+        number: '32695844',
+        name: 'LiveCash Agent',
+        label: 'Numéro Natcash',
+        amountUnit: 'HTG',
+        txLabel: 'ID Transaction Natcash (SMS)'
+      },
+      moncash: {
+        amountUnit: 'HTG',
+        txLabel: 'ID Transaction MonCash / Référence'
+      },
+      crypto: {
+        address: '0x7fD50dAAfeA0a8Df3E4860ECC81939fFBaa11396',
+        network: 'BNB Smart Chain (BEP20)',
+        label: 'Adresse Wallet (BEP20)',
+        amountUnit: 'USDT / USD',
+        txLabel: 'Hash de la Transaction (TxHash)'
+      }
+    };
+
+    function selectPayment(method) {
+      currentMethod = method;
+      document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('active'));
+      document.getElementById(`opt-${method}`).classList.add('active');
+
+      renderPaymentDetails();
+    }
+
+    function renderPaymentDetails() {
+      const detailsContainer = document.getElementById('paymentDetails');
+      const info = paymentInfo[currentMethod];
+
+      if (currentMethod === 'crypto') {
+        detailsContainer.innerHTML = `
+          <div class="detail-row">
+            <span class="detail-label">Réseau:</span>
+            <span class="detail-value">${info.network}</span>
+          </div>
+          <div style="margin-bottom: 6px;">
+            <span class="detail-label">${info.label}:</span>
+            <div class="detail-value" style="font-size: 11px; margin-top: 4px;">${info.address}</div>
+          </div>
+          <button type="button" class="btn-copy" onclick="copyToClipboard('${info.address}')">📋 Kopye Adrès BEP20</button>
+          <div class="warning-text">⚠️ Envoyez uniquement des USDT sur le réseau BEP20. Tout autre jeton sera perdu.</div>
+        `;
+        document.getElementById('amountLabel').innerText = 'Montant déposé (USD / USDT)';
+        document.getElementById('txidLabel').innerText = info.txLabel;
+      } else if (currentMethod === 'moncash') {
+        detailsContainer.innerHTML = `
+          <div class="warning-text" style="margin-top:0;">💡 Effectuez votre paiement MonCash puis joignez la capture d'écran du reçu ci-dessous comme preuve.</div>
+        `;
+        document.getElementById('amountLabel').innerText = 'Montant déposé (HTG)';
+        document.getElementById('txidLabel').innerText = info.txLabel;
+      } else {
+        detailsContainer.innerHTML = `
+          <div class="detail-row">
+            <span class="detail-label">${info.label}:</span>
+            <span class="detail-value">${info.number}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Nom du compte:</span>
+            <span class="detail-value">${info.name}</span>
+          </div>
+          <button type="button" class="btn-copy" onclick="copyToClipboard('${info.number}')">📋 Kopye Nimewo a</button>
+          <div class="warning-text">💡 Effectuez le transfert puis entrez l'ID de confirmation ci-dessous.</div>
+        `;
+        document.getElementById('amountLabel').innerText = 'Montant déposé (HTG)';
+        document.getElementById('txidLabel').innerText = info.txLabel;
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert("✅ Kopye ak siksè: " + text);
+    }
+
+    function submitRecharge(e) {
+      e.preventDefault();
+      const amount = document.getElementById('depositAmount').value;
+      const txid = document.getElementById('depositTxID').value.trim();
+
+      alert(`✅ Demande de dépôt de ${amount} enregistrée avec succès!\nID/TxHash: ${txid}\n\nVotre compte sera crédité après vérification.`);
+      window.location.href = "index.html";
+    }
+
+    // Directement charger le détail par défaut
+    renderPaymentDetails();
+  </script>
+
+</body>
+</html>
