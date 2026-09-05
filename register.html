@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Kreye Kont</title>
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --card-bg: #12161f;
+      --accent-gold: #d4af37;
+      --text-white: #ffffff;
+      --text-gray: #8a94a6;
+      --border-color: #1e2532;
+    }
+
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      width: 100%;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 0 0 8px 0;
+    }
+
+    p.subtitle {
+      color: var(--text-gray);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      color: var(--text-gray);
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      color: var(--text-white);
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent-gold);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      background: var(--accent-gold);
+      color: #000;
+      margin-top: 10px;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+
+    .switch-auth {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-gray);
+    }
+
+    .switch-auth a {
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .alert-box {
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert-error {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid #ef4444;
+    }
+
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid #10b981;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="top-bar">
+      <a href="index.html" class="back-btn">←</a>
+    </div>
+
+    <h1>Kreye Kont <span style="color: var(--accent-gold);">LiveCash</span></h1>
+    <p class="subtitle">Ranpli ti fòm sa a pou w ka kòmanse sèvi ak sèvis yo.</p>
+
+    <div id="alert-box" class="alert-box"></div>
+
+    <form id="register-form">
+      <div class="form-group">
+        <label>Non ak Siyati</label>
+        <input type="text" id="fullname" placeholder="Jan Batis" required>
+      </div>
+
+      <div class="form-group">
+        <label>Nimewo Telefòn</label>
+        <input type="tel" id="phone" placeholder="+509 XXXX XXXX" required>
+      </div>
+
+      <div class="form-group">
+        <label>Adresse E-mail</label>
+        <input type="email" id="email" placeholder="egzanp@gmail.com" required>
+      </div>
+
+      <div class="form-group">
+        <label>Mòdpas</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="6">
+      </div>
+
+      <button type="submit" class="btn-submit" id="submit-btn">Siyen epi Kontiye →</button>
+    </form>
+
+    <div class="switch-auth">
+      Ou gen yon kont deja? <a href="login.html">Konekte</a>
+    </div>
+  </div>
+
+  <!-- Integration Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+      authDomain: "livecash-app.firebaseapp.com",
+      projectId: "livecash-app",
+      storageBucket: "livecash-app.firebasestorage.app",
+      messagingSenderId: "922574187666",
+      appId: "1:922574187666:web:f56a38e19d2b6b51038a4b",
+      measurementId: "G-V643QVVCZN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('register-form');
+    const alertBox = document.getElementById('alert-box');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function showAlert(msg, type = 'error') {
+      alertBox.textContent = msg;
+      alertBox.className = `alert-box alert-${type}`;
+      alertBox.style.display = 'block';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Kreyasyon an ap fèt...";
+
+      try {
+        // 1. Kreye kont nan Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // 2. Mete nom an nan profile itilizatè a
+        await updateProfile(user, { displayName: fullname });
+
+        // 3. Anregistre enfòmasyon yo nan baz de done Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          fullname: fullname,
+          phone: phone,
+          email: email,
+          createdAt: new Date()
+        });
+
+        showAlert("Kont ou kreye ak siksè! N ap rederije w...", "success");
+
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+
+      } catch (error) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Siyen epi Kontiye →";
+        
+        if (error.code === 'auth/email-already-in-use') {
+          showAlert("E-mail sa a gen yon kont sou li deja. Konekte pito.");
+        } else if (error.code === 'auth/weak-password') {
+          showAlert("Mòdpas la dwe gen omwen 6 karaktè.");
+        } else {
+          showAlert("Erè: " + error.message);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
