@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Connexion & Inscription</title>
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: #151c2c;
+      --primary-gold: #d4af37;
+      --primary-emerald: #10b981;
+      --text-color: #ffffff;
+      --text-muted: #9ca3af;
+      --input-bg: #0f172a;
+      --border-color: #2d3748;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 16px;
+      padding: 30px 25px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .brand-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-gold);
+      letter-spacing: 1px;
+    }
+
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--input-bg);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-gold);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 8px;
+    }
+
+    .btn-emerald {
+      background-color: var(--primary-emerald);
+      color: #ffffff;
+    }
+
+    .btn-emerald:hover {
+      background-color: #059669;
+    }
+
+    .btn-google {
+      background-color: #ffffff;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    .btn-google:hover {
+      background-color: #f3f4f6;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .divider span {
+      padding: 0 10px;
+    }
+
+    .toggle-box {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .toggle-box span {
+      color: var(--primary-gold);
+      cursor: pointer;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    .alert {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert-error {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid #ef4444;
+    }
+
+    .alert-success {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid #10b981;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <div class="brand-header">
+      <div class="brand-title">LiveCash</div>
+      <div class="brand-subtitle" id="form-subtitle">Bienvenue ! Se connecter à votre compte</div>
+    </div>
+
+    <div id="alert-box" class="alert"></div>
+
+    <!-- 1. FORMULAIRE DE CONNEXION (LOGIN) -->
+    <form id="login-form">
+      <div class="form-group">
+        <label for="login-email">Adresse E-mail</label>
+        <input type="email" id="login-email" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn btn-emerald">Se connecter</button>
+    </form>
+
+    <!-- 2. FORMULAIRE D'INSCRIPTION (REGISTER) -->
+    <form id="register-form" class="hidden">
+      <div class="form-group">
+        <label for="reg-fullname">Nom complet</label>
+        <input type="text" id="reg-fullname" placeholder="Jean Baptiste" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-phone">Numéro de téléphone</label>
+        <input type="tel" id="reg-phone" placeholder="+509 3200 0000" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-email">Adresse E-mail</label>
+        <input type="email" id="reg-email" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="reg-password">Mot de passe</label>
+        <input type="password" id="reg-password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn btn-emerald">Créer un compte</button>
+    </form>
+
+    <div class="divider">
+      <span>OU CONTINUER AVEC</span>
+    </div>
+
+    <button type="button" class="btn btn-google" id="google-btn">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+      Continuer avec Google
+    </button>
+
+    <div class="toggle-box">
+      <p id="toggle-to-register">Vous n'avez pas de compte ? <span>Créer un compte</span></p>
+      <p id="toggle-to-login" class="hidden">Vous avez déjà un compte ? <span>Se connecter</span></p>
+    </div>
+  </div>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      createUserWithEmailAndPassword, 
+      sendEmailVerification,
+      GoogleAuthProvider, 
+      signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+      authDomain: "livecash-app.firebaseapp.com",
+      projectId: "livecash-app",
+      storageBucket: "livecash-app.firebasestorage.app",
+      messagingSenderId: "922574187666",
+      appId: "1:922574187666:web:f56a38e19d2b6b51038a4b",
+      measurementId: "G-V643QVVCZN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const formSubtitle = document.getElementById('form-subtitle');
+    const toggleToRegister = document.getElementById('toggle-to-register');
+    const toggleToLogin = document.getElementById('toggle-to-login');
+    const alertBox = document.getElementById('alert-box');
+    const googleBtn = document.getElementById('google-btn');
+
+    function showAlert(msg, type = 'error') {
+      alertBox.textContent = msg;
+      alertBox.className = `alert alert-${type}`;
+      alertBox.style.display = 'block';
+    }
+
+    function clearAlert() {
+      alertBox.style.display = 'none';
+    }
+
+    toggleToRegister.addEventListener('click', () => {
+      clearAlert();
+      loginForm.classList.add('hidden');
+      registerForm.classList.remove('hidden');
+      toggleToRegister.classList.add('hidden');
+      toggleToLogin.classList.remove('hidden');
+      formSubtitle.textContent = 'Créer votre compte LiveCash rapidement';
+    });
+
+    toggleToLogin.addEventListener('click', () => {
+      clearAlert();
+      registerForm.classList.add('hidden');
+      loginForm.classList.remove('hidden');
+      toggleToLogin.classList.add('hidden');
+      toggleToRegister.classList.remove('hidden');
+      formSubtitle.textContent = 'Bienvenue ! Se connecter à votre compte';
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'index.html';
+      } catch (error) {
+        showAlert("Erreur : E-mail ou mot de passe incorrect.");
+      }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAlert();
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        showAlert("Compte créé avec succès ! Un e-mail de vérification vous a été envoyé.", "success");
+        setTimeout(() => { window.location.href = 'index.html'; }, 2000);
+      } catch (error) {
+        showAlert("Erreur lors de la création du compte : " + error.message);
+      }
+    });
+
+    googleBtn.addEventListener('click', async () => {
+      clearAlert();
+      try {
+        await signInWithPopup(auth, googleProvider);
+        window.location.href = 'index.html';
+      } catch (error) {
+        showAlert("Erreur avec Google Sign-In : " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
