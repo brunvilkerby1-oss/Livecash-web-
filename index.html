@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #071a12;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    /* Top Bar Header */
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-icon {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      color: #facc15;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      color: #facc15;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.2);
+    }
+
+    .user-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #071a12;
+      box-shadow: 0 0 12px rgba(250, 204, 21, 0.4);
+      cursor: pointer;
+    }
+
+    /* KADRAN BALANS YO */
+    .balance-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .balance-card {
+      background: linear-gradient(135deg, #0f3322, #14442d);
+      border-left: 4px solid #facc15;
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .balance-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .balance-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a7f3d0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .balance-amount-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .balance-amount {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .eye-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: #facc15;
+    }
+
+    .card-badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: #facc15;
+      background: rgba(250, 204, 21, 0.15);
+      padding: 5px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+    }
+
+    /* ID BOX ANWO SOUPAJ LA */
+    .id-display-box {
+      background: rgba(250, 204, 21, 0.1);
+      border: 1px dashed #facc15;
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .id-info-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #a7f3d0;
+    }
+
+    .id-code {
+      color: #facc15;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .btn-copy-id {
+      background: #facc15;
+      color: #071a12;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Action Buttons (Dépôt & Retirer) */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-action {
+      flex: 1;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);
+    }
+
+    .btn-secondary {
+      background: #0f3322;
+      color: #facc15;
+      border: 1px solid #facc15;
+      box-shadow: none;
+    }
+
+    /* Convertisseur HTG / USD */
+    .convert-box {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .convert-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rate-badge {
+      font-size: 11px;
+      background: rgba(250, 204, 21, 0.2);
+      color: #facc15;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+
+    .convert-input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .convert-input-group input {
+      flex: 1;
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #ffffff;
+      font-weight: 700;
+      outline: none;
+      font-size: 13px;
+    }
+
+    /* Vos Raccourcis - Modifye pou 3 kolòn */
+    .section-label {
+      font-size: 15px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 12px;
+    }
+
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .shortcut-item {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.15);
+      border-radius: 14px;
+      padding: 14px 6px;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: 0.2s;
+    }
+
+    .shortcut-item:active {
+      transform: scale(0.96);
+    }
+
+    .shortcut-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(250, 204, 21, 0.15);
+      color: #facc15;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin: 0 auto 8px;
+    }
+
+    .shortcut-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    /* Nos Services */
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .service-card {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.15);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .service-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .service-avatar {
+      width: 40px;
+      height: 40px;
+      background: rgba(250, 204, 21, 0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .service-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .service-desc {
+      font-size: 11px;
+      color: #a7f3d0;
+      margin-top: 2px;
+    }
+
+    /* FOOTER ANBA SIT LA */
+    .footer-section {
+      background: #05140e;
+      border-top: 1px solid rgba(250, 204, 21, 0.2);
+      border-radius: 20px 20px 0 0;
+      padding: 24px 16px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .footer-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 6px;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .footer-links a {
+      color: #facc15;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: #64748b;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 12px;
+    }
+
+    /* BOTTOM NAVIGATION BAR (FIXE ANBA) */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #092418;
+      border-top: 1px solid rgba(250, 204, 21, 0.3);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-item.active, .nav-item:hover {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+
+    /* DRAWER MENU */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0; left: -300px;
+      width: 280px; height: 100%;
+      background: #092418;
+      border-right: 2px solid #facc15;
+      z-index: 201;
+      padding: 24px 18px;
+      transition: 0.3s ease-in-out;
+      overflow-y: auto;
+    }
+
+    .drawer.active {
+      left: 0;
+    }
+
+    .profile-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.25);
+      margin-bottom: 18px;
+    }
+
+    .profile-details h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    .profile-details p {
+      font-size: 11px;
+      color: #e2e8f0;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13.5px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+      transition: 0.2s;
+    }
+
+    .menu-link:hover {
+      background: rgba(250, 204, 21, 0.15);
+      color: #facc15;
+    }
+
+    .menu-highlight {
+      background: linear-gradient(135deg, rgba(250, 204, 21, 0.2), rgba(250, 204, 21, 0.05));
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      color: #facc15;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Nav -->
+  <div class="top-header">
+    <div class="brand-section">
+      <div class="menu-icon" onclick="toggleDrawer()">☰</div>
+      <div class="logo-text">LiveCash</div>
+    </div>
+    <div class="user-avatar" id="headerAvatar" onclick="toggleDrawer()">--</div>
+  </div>
+
+  <!-- ID DISPLAY BOX -->
+  <div class="id-display-box">
+    <div class="id-info-text">
+      ID Compte: <span class="id-code" id="displayUserID">LC-00000</span>
+    </div>
+    <button class="btn-copy-id" onclick="copyUserID()">KOPYE</button>
+  </div>
+
+  <!-- KADRAN BALANS YO -->
+  <div class="balance-container">
+    <!-- 1. Balans LiveCash (Goud) -->
+    <div class="balance-card">
+      <div class="balance-info">
+        <span class="balance-title">Solde LiveCash</span>
+        <div class="balance-amount-row">
+          <div class="balance-amount" id="displayHTG">0.00 HTG</div>
+          <button class="eye-btn" onclick="toggleVisibility('htg')">👁️</button>
+        </div>
+      </div>
+      <div class="card-badge">HTG</div>
+    </div>
+
+    <!-- 2. Balans Visa Cash (USD) -->
+    <div class="balance-card">
+      <div class="balance-info">
+        <span class="balance-title">Solde Visa Cash</span>
+        <div class="balance-amount-row">
+          <div class="balance-amount" id="displayUSD">$0.00</div>
+          <button class="eye-btn" onclick="toggleVisibility('usd')">👁️</button>
+        </div>
+      </div>
+      <div class="card-badge">VISA CASH</div>
+    </div>
+  </div>
+
+  <!-- Bouton Aksyon Rapid -->
+  <div class="action-buttons">
+    <a href="recharge.html" class="btn-action">↑ Dépôt</a>
+    <a href="retrait.html" class="btn-action btn-secondary">↗ Retirer</a>
+  </div>
+
+  <!-- Konvètisè HTG / USD -->
+  <div class="convert-box">
+    <div class="convert-header">
+      <span>💱 Convertisseur HTG / USD</span>
+      <span class="rate-badge">1 USD = 138 HTG</span>
+    </div>
+    <div class="convert-input-group">
+      <input type="number" id="inputHTG" placeholder="Montant en HTG" oninput="calculateConversion()">
+      <input type="text" id="outputUSD" placeholder="0.00 USD" readonly style="color: #facc15;">
+    </div>
+  </div>
+
+  <!-- Vos Raccourcis (3 kolòn ak 6 bouton sèlman) -->
+  <div class="section-label">Vos raccourcis</div>
+  <div class="shortcuts-grid">
+    <a href="carte.html" class="shortcut-item">
+      <div class="shortcut-icon">💳</div>
+      <div class="shortcut-text">Mes Cartes</div>
+    </a>
+    <a href="boostage.html" class="shortcut-item">
+      <div class="shortcut-icon">🚀</div>
+      <div class="shortcut-text">Boostage</div>
+    </a>
+    <a href="historique.html" class="shortcut-item">
+      <div class="shortcut-icon">📜</div>
+      <div class="shortcut-text">Historique</div>
+    </a>
+    <a href="transactions.html" class="shortcut-item">
+      <div class="shortcut-icon">💸</div>
+      <div class="shortcut-text">Transfert</div>
+    </a>
+    <a href="support.html" class="shortcut-item">
+      <div class="shortcut-icon">🎧</div>
+      <div class="shortcut-text">Support</div>
+    </a>
+    <a href="parametres.html" class="shortcut-item">
+      <div class="shortcut-icon">⚙️</div>
+      <div class="shortcut-text">Réglages</div>
+    </a>
+  </div>
+
+  <!-- Nos Services -->
+  <div class="section-label">Nos Services</div>
+  <div class="services-list">
+    <a href="carte.html" class="service-card">
+      <div class="service-info">
+        <div class="service-avatar">💳</div>
+        <div>
+          <div class="service-title">Visa Cash Virtuelle</div>
+          <div class="service-desc">Achetez et payez en ligne en toute sécurité</div>
+        </div>
+      </div>
+      <div style="color: #facc15; font-weight: 800;">›</div>
+    </a>
+
+    <a href="boostage.html" class="service-card">
+      <div class="service-info">
+        <div class="service-avatar">📈</div>
+        <div>
+          <div class="service-title">Boostage Réseaux Sociaux</div>
+          <div class="service-desc">Abonnés, Likes, Vues rapides</div>
+        </div>
+      </div>
+      <div style="color: #facc15; font-weight: 800;">›</div>
+    </a>
+  </div>
+
+  <!-- FOOTER ANBA SIT LA -->
+  <div class="footer-section">
+    <div class="footer-logo">LiveCash</div>
+    <div class="footer-text">
+      Votre plateforme sécurisée pour la gestion de cartes virtuelles et services de boostage en ligne.
+    </div>
+    <div class="footer-links">
+      <a href="support.html">Support</a>
+      <a href="parametres.html">Sécurité</a>
+      <a href="historique.html">Transactions</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 LiveCash Media. Tous droits réservés.
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION BAR -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="carte.html" class="nav-item">
+      <span class="nav-icon">💳</span>
+      <span>Carte</span>
+    </a>
+    <a href="boostage.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Boost</span>
+    </a>
+    <div class="nav-item" onclick="toggleDrawer()" style="cursor: pointer;">
+      <span class="nav-icon">☰</span>
+      <span>Menu</span>
+    </div>
+  </div>
+
+  <!-- SIDE DRAWER MENU -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div class="profile-box">
+      <div class="user-avatar" id="drawerAvatar">--</div>
+      <div class="profile-details">
+        <h4 id="drawerUserName">Utilisateur</h4>
+        <p id="drawerUserEmail">client@livecash.com</p>
+        <p style="color: #facc15; font-weight: 700; margin-top: 2px;" id="drawerUserID">ID: LC-00000</p>
+      </div>
+    </div>
+
+    <a href="index.html" class="menu-link menu-highlight">🏠 Tableau de bord</a>
+    <a href="recharge.html" class="menu-link">📥 Dépôt (Recharger Compte)</a>
+    <a href="retrait.html" class="menu-link">📤 Retirer des Fonds</a>
+    <a href="carte.html" class="menu-link">💳 Mes Cartes Virtuelles</a>
+    <a href="boostage.html" class="menu-link">🚀 Boostage Réseaux</a>
+    <a href="historique.html" class="menu-link">📜 Historique</a>
+    <a href="support.html" class="menu-link">🎧 Support Client</a>
+    <a href="parametres.html" class="menu-link">⚙️ Paramètres du compte</a>
+    <a href="login.html" class="menu-link" style="margin-top: 20px; color: #ef4444;">🚪 Déconnexion</a>
+  </div>
+
+  <script>
+    const HTG_RATE = 138;
+    let rawHTG = 0;
+    let rawUSD = 0;
+    let isHiddenHTG = false;
+    let isHiddenUSD = false;
+    let currentUserID = "";
+
+    function loadUserData() {
+      let storedID = localStorage.getItem('livecash_user_id');
+      if (!storedID) {
+        storedID = 'LC-' + Math.floor(10000 + Math.random() * 90000);
+        localStorage.setItem('livecash_user_id', storedID);
+      }
+      currentUserID = storedID;
+
+      const user = JSON.parse(localStorage.getItem('currentUser')) || {
+        fullName: "Utilisateur LiveCash",
+        email: "client@livecash.com",
+        balanceHTG: 0,
+        cardUSD: 0.00
+      };
+
+      document.getElementById('displayUserID').innerText = currentUserID;
+      document.getElementById('drawerUserID').innerText = "ID: " + currentUserID;
+      document.getElementById('drawerUserName').innerText = user.fullName || "Utilisateur";
+      document.getElementById('drawerUserEmail').innerText = user.email || "client@livecash.com";
+
+      const nameParts = (user.fullName || "Utilisateur LiveCash").trim().split(' ');
+      const initials = nameParts.length > 1 
+        ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+        : nameParts[0].substring(0, 2).toUpperCase();
+
+      document.getElementById('headerAvatar').innerText = initials;
+      document.getElementById('drawerAvatar').innerText = initials;
+
+      rawHTG = user.balanceHTG || 0;
+      rawUSD = user.cardUSD || 0.00;
+
+      updateDisplay();
+    }
+
+    function copyUserID() {
+      navigator.clipboard.writeText(currentUserID);
+      alert("✅ ID LiveCash kopye ak siksè : " + currentUserID);
+    }
+
+    function updateDisplay() {
+      document.getElementById('displayHTG').innerText = isHiddenHTG ? '••••••' : `${rawHTG.toLocaleString()} HTG`;
+      document.getElementById('displayUSD').innerText = isHiddenUSD ? '••••••' : `$${rawUSD.toFixed(2)}`;
+    }
+
+    function toggleVisibility(type) {
+      if (type === 'htg') isHiddenHTG = !isHiddenHTG;
+      if (type === 'usd') isHiddenUSD = !isHiddenUSD;
+      updateDisplay();
+    }
+
+    function calculateConversion() {
+      const htgAmount = parseFloat(document.getElementById('inputHTG').value);
+      if (!isNaN(htgAmount) && htgAmount > 0) {
+        const usdResult = (htgAmount / HTG_RATE).toFixed(2);
+        document.getElementById('outputUSD').value = `${usdResult} USD`;
+      } else {
+        document.getElementById('outputUSD').value = '0.00 USD';
+      }
+    }
+
+    function toggleDrawer() {
+      const drawer = document.getElementById('drawer');
+      const overlay = document.getElementById('drawerOverlay');
+      drawer.classList.toggle('active');
+      overlay.style.display = drawer.classList.contains('active') ? 'block' : 'none';
+    }
+
+    loadUserData();
+  </script>
+
+</body>
+</html>
