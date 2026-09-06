@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Mes Cartes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #071a12;
+      color: #ffffff;
+      padding: 20px 16px;
+      max-width: 440px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* Transition ant ekran yo */
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    /* Top Navigation Header */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #facc15;
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* EKRAN 1: MES CARTES */
+    .solde-container {
+      margin-bottom: 24px;
+    }
+
+    .solde-main {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solde-subtitle {
+      font-size: 13px;
+      color: #a7f3d0;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 16px;
+      border-radius: 16px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      font-weight: 800;
+    }
+
+    .btn-action.secondary {
+      background: #0f3322;
+      color: #facc15;
+      border: 1px solid #facc15;
+    }
+
+    .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #a7f3d0;
+      margin-bottom: 14px;
+    }
+
+    /* DESIGN KAT MERU / VISA CASH */
+    .meru-card {
+      width: 100%;
+      aspect-ratio: 1.58 / 1;
+      background: #000000;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background-image: radial-gradient(circle at 90% 20%, rgba(59, 130, 246, 0.2), transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.2), transparent 40%);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-brand-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .chip-and-wifi {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .sim-chip {
+      width: 38px;
+      height: 28px;
+      background: linear-gradient(135deg, #d1d5db, #9ca3af);
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .wifi-icon {
+      font-size: 18px;
+      color: #9ca3af;
+      transform: rotate(90deg);
+    }
+
+    .card-number-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .card-number-text {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #ffffff;
+    }
+
+    .btn-copy-icon {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    .card-extra-info {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    .card-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-holder-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .visa-logo-text {
+      font-size: 22px;
+      font-weight: 900;
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    /* EKRAN 2: DÉTAILS ET OPTIONS */
+    .options-list {
+      background: #0f3322;
+      color: #ffffff;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 24px;
+      padding: 8px 16px;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+      cursor: pointer;
+    }
+
+    .option-item:last-child {
+      border-bottom: none;
+    }
+
+    .option-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(250, 204, 21, 0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #facc15;
+    }
+
+    .option-content { flex: 1; }
+    .option-title { font-size: 15px; font-weight: 800; color: #ffffff; }
+    .option-sub { font-size: 12px; color: #a7f3d0; font-weight: 600; margin-top: 2px; }
+
+    /* POP-UP MODALS */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-end;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #0b2217;
+      color: #ffffff;
+      border-top: 2px solid #facc15;
+      width: 100%;
+      max-width: 440px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px 20px 32px 20px;
+      margin: 0 auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #facc15;
+    }
+
+    .btn-close-modal {
+      width: 100%;
+      background: transparent;
+      color: #9ca3af;
+      border: none;
+      padding: 14px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* STYLES PIN INPUTS */
+    .pin-input-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .pin-box {
+      width: 50px;
+      height: 55px;
+      background: #071a12;
+      border: 2px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      outline: none;
+    }
+
+    .pin-box:focus {
+      border-color: #facc15;
+    }
+
+    .form-input-custom {
+      width: 100%;
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      padding: 14px;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      outline: none;
+    }
+
+    .btn-submit-action {
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* RECHARGE BOX STYLES */
+    .recharge-box {
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .recharge-label {
+      font-size: 12px;
+      color: #a7f3d0;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .recharge-input-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .recharge-currency {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 17px;
+    }
+
+    .recharge-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: right;
+      width: 140px;
+    }
+
+    .recharge-subtext {
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: right;
+      margin-top: 6px;
+    }
+
+    .swap-circle {
+      width: 40px;
+      height: 40px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -24px auto -24px auto;
+      position: relative;
+      z-index: 10;
+      font-weight: bold;
+      font-size: 18px;
+      border: 3px solid #0b2217;
+    }
+
+    .info-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #a7f3d0;
+      margin: 18px 0;
+      font-weight: 600;
+      background: rgba(250, 204, 21, 0.08);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(250, 204, 21, 0.15);
+    }
+
+    /* TRANSACTIONS LIST */
+    .tx-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+    }
+    .tx-title { font-weight: 800; font-size: 14px; color: #ffffff; }
+    .tx-date { font-size: 11px; color: #a7f3d0; margin-top: 2px; }
+    .tx-amount { font-weight: 800; color: #ef4444; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= EKRAN 1: MES CARTES ================= -->
+  <div class="screen active" id="screenMain">
+    <div class="top-header">
+      <button class="btn-back" onclick="location.href='index.html'">←</button>
+      <div class="page-title">Cartes</div>
+    </div>
+
+    <div class="solde-container">
+      <div class="solde-main" id="display-total-usd">$0.00</div>
+      <div class="solde-subtitle">Solde total des cartes en USD</div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn-action primary" onclick="openRechargeModal()">
+        ↑ Ajouter un solde
+      </button>
+      <button class="btn-action secondary" onclick="alert('Retrait disponible vers votre solde principal.')">
+        ↓ Retirer
+      </button>
+    </div>
+
+    <div class="section-label">Virtual card</div>
+
+    <!-- KAT MODEL MERU -->
+    <div class="meru-card" onclick="showScreen('screenDetails')">
+      <div class="card-top">
+        <div class="card-brand-title">LiveCash</div>
+        <div style="text-align: right;">
+          <div style="font-size: 10px; opacity: 0.7; font-weight: 700;">SOLDE</div>
+          <div style="font-size: 18px; font-weight: 800;" id="display-card-usd">$0.00 USD</div>
+        </div>
+      </div>
+
+      <div class="chip-and-wifi">
+        <div class="sim-chip"></div>
+        <div class="wifi-icon">)))</div>
+      </div>
+
+      <div>
+        <div class="card-number-row">
+          <div class="card-number-text" id="main-card-num-preview">•••• •••• •••• 3592</div>
+        </div>
+        
+        <div class="card-extra-info">
+          <div>Exp: <span id="main-card-exp-preview">••/••</span></div>
+          <div>CVV: <span id="main-card-cvv-preview">•••</span></div>
+        </div>
+      </div>
+
+      <div class="card-bottom-row">
+        <div class="card-holder-name" id="main-card-holder-preview">CLIENT LIVECASH</div>
+        <div class="visa-logo-text">VISA</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= EKRAN 2: DÉTAILS & OPTIONS ================= -->
+  <div class="screen" id="screenDetails">
+    <div class="top-header">
+      <button class="btn-back" onclick="showScreen('screenMain')">←</button>
+      <div class="page-title">Détails de la Carte</div>
+    </div>
+
+    <!-- KAT LA NAN EKRAN DETAILS LA AK MENM DESIGN MERU A -->
+    <div class="meru-card">
+      <div class="card-top">
+        <div class="card-brand-title">LiveCash</div>
+        <div style="text-align: right;">
+          <div style="font-size: 10px; opacity: 0.7; font-weight: 700;">SOLDE ACTUEL</div>
+          <div style="font-size: 18px; font-weight: 800;" id="display-card-usd-details">$0.00 USD</div>
+        </div>
+      </div>
+
+      <div class="chip-and-wifi">
+        <div class="sim-chip"></div>
+        <div class="wifi-icon">)))</div>
+      </div>
+
+      <div>
+        <div class="card-number-row">
+          <div class="card-number-text" id="details-card-num">•••• •••• •••• 3592</div>
+          <button class="btn-copy-icon" id="btn-copy-num" style="display:none;" onclick="copyCardNumber()">📋</button>
+        </div>
+        
+        <div class="card-extra-info">
+          <div>Exp: <span id="details-card-exp">••/••</span></div>
+          <div>CVV: <span id="details-card-cvv">•••</span></div>
+        </div>
+      </div>
+
+      <div class="card-bottom-row">
+        <div class="card-holder-name" id="details-card-holder">CLIENT LIVECASH</div>
+        <div class="visa-logo-text">VISA</div>
+      </div>
+    </div>
+
+    <!-- LIS OPSYON YO -->
+    <div class="options-list">
+      <div class="option-item" onclick="handleVoirDetails()">
+        <div class="option-icon">💳</div>
+        <div class="option-content">
+          <div class="option-title" id="btn-toggle-details-text">Voir les détails</div>
+          <div class="option-sub">Voir numéro et cvc de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalLimites')">
+        <div class="option-icon">📈</div>
+        <div class="option-content">
+          <div class="option-title">Limites</div>
+          <div class="option-sub">Afficher les limites de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="handleAfficherPIN()">
+        <div class="option-icon">🔑</div>
+        <div class="option-content">
+          <div class="option-title">Afficher le code PIN</div>
+          <div class="option-sub">Afficher le code PIN de la carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalChangePIN')">
+        <div class="option-icon">✏️</div>
+        <div class="option-content">
+          <div class="option-title">Changer le code PIN</div>
+          <div class="option-sub">Mettez à jour le code PIN de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalTxHistory')">
+        <div class="option-icon">📋</div>
+        <div class="option-content">
+          <div class="option-title">Voir les transactions</div>
+          <div class="option-sub">Voir les transactions par carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalBloquer')">
+        <div class="option-icon">🔒</div>
+        <div class="option-content">
+          <div class="option-title">Bloquer la carte</div>
+          <div class="option-sub">Bloquez votre carte à tout moment</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalAdresse')">
+        <div class="option-icon">📍</div>
+        <div class="option-content">
+          <div class="option-title">Adresse de facturation</div>
+          <div class="option-sub">Voir l'adresse de facturation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 1: KREYE PIN (PREMYE FWA) ================= -->
+  <div class="modal-overlay" id="modalCreatePIN">
+    <div class="modal-content">
+      <div class="modal-header" id="create-pin-title">Créer un code PIN à 4 chiffres</div>
+      <p style="font-size: 13px; color: #a7f3d0; text-align: center; margin-bottom: 16px;" id="create-pin-desc">
+        Veuillez définir un code PIN pour sécuriser l'accès aux détails de votre carte.
+      </p>
+
+      <div class="pin-input-group">
+        <input type="password" maxlength="1" class="pin-box pin-create" oninput="movePinFocus(this, 1, 'pin-create')">
+        <input type="password" maxlength="1" class="pin-box pin-create" oninput="movePinFocus(this, 2, 'pin-create')">
+        <input type="password" maxlength="1" class="pin-box pin-create" oninput="movePinFocus(this, 3, 'pin-create')">
+        <input type="password" maxlength="1" class="pin-box pin-create" oninput="movePinFocus(this, 4, 'pin-create')">
+      </div>
+
+      <div id="pin-create-error" style="color: #ef4444; font-size: 12px; font-weight: 700; text-align: center; display: none; margin-bottom: 10px;"></div>
+
+      <button class="btn-submit-action" onclick="submitCreatePIN()">Confirmer le PIN</button>
+      <button class="btn-close-modal" onclick="closeModal('modalCreatePIN')">Annuler</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 2: ANTANMEN PIN POU DEBLOKE ================= -->
+  <div class="modal-overlay" id="modalEnterPIN">
+    <div class="modal-content">
+      <div class="modal-header">Entrez votre code PIN</div>
+      <p style="font-size: 13px; color: #a7f3d0; text-align: center; margin-bottom: 16px;">
+        Entrez votre PIN à 4 chiffres pour afficher les détails.
+      </p>
+
+      <div class="pin-input-group">
+        <input type="password" maxlength="1" class="pin-box pin-verify" oninput="movePinFocus(this, 1, 'pin-verify')">
+        <input type="password" maxlength="1" class="pin-box pin-verify" oninput="movePinFocus(this, 2, 'pin-verify')">
+        <input type="password" maxlength="1" class="pin-box pin-verify" oninput="movePinFocus(this, 3, 'pin-verify')">
+        <input type="password" maxlength="1" class="pin-box pin-verify" oninput="movePinFocus(this, 4, 'pin-verify')">
+      </div>
+
+      <div id="pin-verify-error" style="color: #ef4444; font-size: 12px; font-weight: 700; text-align: center; display: none; margin-bottom: 10px;"></div>
+
+      <button class="btn-submit-action" onclick="submitVerifyPIN()">Déverrouiller</button>
+      <button class="btn-close-modal" onclick="closeModal('modalEnterPIN')">Annuler</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 3: CHANGER LE CODE PIN ================= -->
+  <div class="modal-overlay" id="modalChangePIN">
+    <div class="modal-content">
+      <div class="modal-header">Changer le code PIN</div>
+
+      <input type="password" maxlength="4" placeholder="Ancien Code PIN" id="input-old-pin" class="form-input-custom" style="text-align: center; letter-spacing: 4px;">
+      <input type="password" maxlength="4" placeholder="Nouveau Code PIN" id="input-new-pin" class="form-input-custom" style="text-align: center; letter-spacing: 4px;">
+
+      <button class="btn-submit-action" onclick="submitChangePIN()">Enregistrer le nouveau PIN</button>
+      <button class="btn-close-modal" onclick="closeModal('modalChangePIN')">Annuler</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 4: TRANSACTIONS ================= -->
+  <div class="modal-overlay" id="modalTxHistory">
+    <div class="modal-content">
+      <div class="modal-header">Historique des transactions</div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">Amazon Store</div>
+          <div class="tx-date">Aujourd'hui, 14:20</div>
+        </div>
+        <div class="tx-amount">-$12.99 USD</div>
+      </div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">Netflix Subscription</div>
+          <div class="tx-date">Hier, 09:15</div>
+        </div>
+        <div class="tx-amount">-$15.99 USD</div>
+      </div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">Google Cloud Services</div>
+          <div class="tx-date">28 Aug 2026</div>
+        </div>
+        <div class="tx-amount">-$8.50 USD</div>
+      </div>
+
+      <button class="btn-close-modal" style="background: #2563eb; color: #fff; border-radius: 14px; margin-top: 14px;" onclick="closeModal('modalTxHistory')">Fermer</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 5: LIMITES ================= -->
+  <div class="modal-overlay" id="modalLimites">
+    <div class="modal-content">
+      <div class="modal-header">Limites de la carte</div>
+      <div style="background: #071a12; padding: 16px; border-radius: 16px; border: 1px solid rgba(250, 204, 21, 0.2); margin-bottom: 12px;">
+        <div style="font-size: 12px; color: #a7f3d0;">Limite de paiement quotidien</div>
+        <div style="font-size: 22px; font-weight: 800; color: #fff;">$5,000.00 USD</div>
+      </div>
+      <div style="background: #071a12; padding: 16px; border-radius: 16px; border: 1px solid rgba(250, 204, 21, 0.2);">
+        <div style="font-size: 12px; color: #a7f3d0;">Limite de retrait par mois</div>
+        <div style="font-size: 22px; font-weight: 800; color: #fff;">$15,000.00 USD</div>
+      </div>
+      <button class="btn-close-modal" onclick="closeModal('modalLimites')">Fermer</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 6: ADRESSE DE FACTURATION ================= -->
+  <div class="modal-overlay" id="modalAdresse">
+    <div class="modal-content">
+      <div class="modal-header">Adresse de facturation</div>
+      <div style="background: #071a12; padding: 16px; border-radius: 16px; border: 1px solid rgba(250, 204, 21, 0.2); font-size: 14px; line-height: 1.6;">
+        <strong>LiveCash Financial Services</strong><br>
+        Rue 18 Cap-Haïtien / Port-au-Prince<br>
+        Haïti, HT6110<br>
+        <strong>Pays:</strong> Haïti
+      </div>
+      <button class="btn-close-modal" onclick="closeModal('modalAdresse')">Fermer</button>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL 7: BLOQUER LA CARTE ================= -->
+  <div class="modal-overlay" id="modalBloquer">
+    <div class="modal-content">
+      <div class="modal-header">Bloquer la carte</div>
+      <p style="font-size: 14px; color: #a7f3d0; text-align: center; margin-bottom: 20px;">
+        Voulez-vous vraiment bloquer temporairement cette carte ? Vous pourrez la débloquer à tout moment.
+      </p>
+      <button class="btn-submit-action" style="background: #ef4444; color: #fff;" onclick="alert('Carte bloquée avec succès!'); closeModal('modalBloquer');">Oui, Bloquer la carte</button>
+      <button class="btn-close-modal" onclick="closeModal('modalBloquer')">Annuler</button>
+    </div>
+  </div>
+
+
+  <!-- ================= POP-UP: RECHARGER LA CARTE ================= -->
+  <div class="modal-overlay" id="modalRecharge">
+    <div class="modal-content">
+      <div class="modal-header">Recharger la carte</div>
+
+      <div class="recharge-box">
+        <div class="recharge-label">De votre solde LiveCash</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇭🇹 HTG</div>
+          <input type="number" id="input-htg-amount" class="recharge-input" placeholder="0">
+        </div>
+        <div class="recharge-subtext">Disponible: <span id="text-available-htg">0.00 HTG</span></div>
+      </div>
+
+      <div class="swap-circle">↓</div>
+
+      <div class="recharge-box" style="margin-top: 0;">
+        <div class="recharge-label">À la carte</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇺🇸 USD</div>
+          <span style="font-size:24px; font-weight:800;" id="text-calc-usd">$0.00</span>
+        </div>
+        <div class="recharge-subtext">Frais de recharge: $2.98 USDT</div>
+      </div>
+
+      <div class="info-badge">
+        ℹ️ Montant minimum: 500 HTG (Taux: 1 USD = 138 HTG)
+      </div>
+
+      <button class="btn-submit-action" id="btn-confirm-recharge" disabled style="opacity:0.5;">Accepter</button>
+      <button class="btn-close-modal" onclick="closeModal('modalRecharge')">Annuler</button>
+    </div>
+  </div>
+
+
+  <!-- FIREBASE AK LOJIK SCRIPT YO -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+      authDomain: "livecash-app.firebaseapp.com",
+      projectId: "livecash-app",
+      storageBucket: "livecash-app.firebasestorage.app",
+      messagingSenderId: "922574187666",
+      appId: "1:922574187666:web:f56a38e19d2b6b51038a4b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const TAUX_CHANGE = 138;
+    const FRAIS_USDT = 2.98;
+
+    // VRAY ENFÒMASYON KAT LA
+    const REAL_CARD = {
+      number: "4341 3310 6285 3592",
+      exp: "03/2032",
+      cvv: "201",
+      holder: "CLIENT LIVECASH"
+    };
+
+    let currentUser = null;
+    let userLiveCashHTG = 0;
+    let userCardUSD = 0;
+    
+    // LOJIK CODE PIN
+    let storedPin = localStorage.getItem('livecash_card_pin') || null;
+    let isPinCreatingStep = 1; // 1 = premye fwa, 2 = konfime
+    let tempFirstPin = "";
+    let isCardUnlocked = false;
+
+    const inputHTG = document.getElementById('input-htg-amount');
+    const textCalcUSD = document.getElementById('text-calc-usd');
+    const textAvailableHTG = document.getElementById('text-available-htg');
+    const btnConfirm = document.getElementById('btn-confirm-recharge');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        const userDocRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userDocRef);
+
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          userLiveCashHTG = data.balance || 0;
+          userCardUSD = data.cardBalance || 0;
+
+          if(data.fullName) {
+            REAL_CARD.holder = data.fullName.toUpperCase();
+            document.getElementById('main-card-holder-preview').textContent = REAL_CARD.holder;
+            document.getElementById('details-card-holder').textContent = REAL_CARD.holder;
+          }
+
+          updateUI();
+        }
+      }
+    });
+
+    function updateUI() {
+      document.getElementById('display-total-usd').textContent = `$${userCardUSD.toFixed(2)}`;
+      document.getElementById('display-card-usd').textContent = `$${userCardUSD.toFixed(2)} USD`;
+      document.getElementById('display-card-usd-details').textContent = `$${userCardUSD.toFixed(2)} USD`;
+      textAvailableHTG.textContent = `${userLiveCashHTG.toLocaleString('fr-FR')} HTG`;
+    }
+
+    // LOJIK BOUTON "VOIR LES DÉTAILS"
+    window.handleVoirDetails = function() {
+      if (isCardUnlocked) {
+        // Si l te deja debloke, kouvri l ankò
+        lockCardData();
+      } else {
+        // Si l poko debloke
+        if (!storedPin) {
+          // Premye fwa: Mande Kreye PIN
+          isPinCreatingStep = 1;
+          document.getElementById('create-pin-title').textContent = "Créer un code PIN à 4 chiffres";
+          document.getElementById('create-pin-desc').textContent = "Veuillez définir un code PIN pour sécuriser l'accès aux détails de votre carte.";
+          clearPinInputs('pin-create');
+          window.openModal('modalCreatePIN');
+        } else {
+          // Dezyèm fwa: Mande Antre PIN
+          clearPinInputs('pin-verify');
+          window.openModal('modalEnterPIN');
+        }
+      }
+    };
+
+    window.submitCreatePIN = function() {
+      const inputs = document.querySelectorAll('.pin-create');
+      let pin = "";
+      inputs.forEach(inp => pin += inp.value);
+
+      const errDiv = document.getElementById('pin-create-error');
+      errDiv.style.display = 'none';
+
+      if (pin.length !== 4) {
+        errDiv.textContent = "Veuillez entrer 4 chiffres.";
+        errDiv.style.display = 'block';
+        return;
+      }
+
+      if (isPinCreatingStep === 1) {
+        tempFirstPin = pin;
+        isPinCreatingStep = 2;
+        clearPinInputs('pin-create');
+        document.getElementById('create-pin-title').textContent = "Confirmer le code PIN";
+        document.getElementById('create-pin-desc').textContent = "Veuillez re-saisir votre code PIN à 4 chiffres pour le confirmer.";
+      } else if (isPinCreatingStep === 2) {
+        if (pin === tempFirstPin) {
+          storedPin = pin;
+          localStorage.setItem('livecash_card_pin', pin);
+          window.closeModal('modalCreatePIN');
+          unlockCardData();
+          alert("Code PIN créé avec succès !");
+        } else {
+          errDiv.textContent = "Les codes PIN ne correspondent pas. Recommencez.";
+          errDiv.style.display = 'block';
+          isPinCreatingStep = 1;
+          clearPinInputs('pin-create');
+          document.getElementById('create-pin-title').textContent = "Créer un code PIN à 4 chiffres";
+        }
+      }
+    };
+
+    window.submitVerifyPIN = function() {
+      const inputs = document.querySelectorAll('.pin-verify');
+      let pin = "";
+      inputs.forEach(inp => pin += inp.value);
+
+      const errDiv = document.getElementById('pin-verify-error');
+      errDiv.style.display = 'none';
+
+      if (pin === storedPin) {
+        window.closeModal('modalEnterPIN');
+        unlockCardData();
+      } else {
+        errDiv.textContent = "Code PIN incorrect !";
+        errDiv.style.display = 'block';
+      }
+    };
+
+    function unlockCardData() {
+      isCardUnlocked = true;
+      document.getElementById('details-card-num').textContent = REAL_CARD.number;
+      document.getElementById('details-card-exp').textContent = REAL_CARD.exp;
+      document.getElementById('details-card-cvv').textContent = REAL_CARD.cvv;
+      document.getElementById('btn-copy-num').style.display = 'inline-block';
+      document.getElementById('btn-toggle-details-text').textContent = "Masquer les détails";
+    }
+
+    function lockCardData() {
+      isCardUnlocked = false;
+      document.getElementById('details-card-num').textContent = "•••• •••• •••• 3592";
+      document.getElementById('details-card-exp').textContent = "••/••";
+      document.getElementById('details-card-cvv').textContent = "•••";
+      document.getElementById('btn-copy-num').style.display = 'none';
+      document.getElementById('btn-toggle-details-text').textContent = "Voir les détails";
+    }
+
+    window.handleAfficherPIN = function() {
+      if (storedPin) {
+        alert(`Votre code PIN secret est: ${storedPin}`);
+      } else {
+        alert("Vous n'avez pas encore configuré de code PIN. Cliquez sur 'Voir les détails' pour en créer un.");
+      }
+    };
+
+    window.submitChangePIN = function() {
+      const oldPin = document.getElementById('input-old-pin').value;
+      const newPin = document.getElementById('input-new-pin').value;
+
+      if (oldPin !== storedPin) {
+        alert("L'ancien code PIN est incorrect !");
+        return;
+      }
+      if (newPin.length !== 4) {
+        alert("Le nouveau code PIN doit contenir 4 chiffres.");
+        return;
+      }
+
+      storedPin = newPin;
+      localStorage.setItem('livecash_card_pin', newPin);
+      window.closeModal('modalChangePIN');
+      alert("Code PIN modifié avec succès !");
+      document.getElementById('input-old-pin').value = '';
+      document.getElementById('input-new-pin').value = '';
+    };
+
+    window.copyCardNumber = function() {
+      navigator.clipboard.writeText(REAL_CARD.number.replace(/\s+/g, ''));
+      alert("Numéro de carte copié !");
+    };
+
+    window.movePinFocus = function(current, index, className) {
+      if (current.value.length >= 1) {
+        const inputs = document.querySelectorAll('.' + className);
+        if (index < inputs.length) {
+          inputs[index].focus();
+        }
+      }
+    };
+
+    function clearPinInputs(className) {
+      const inputs = document.querySelectorAll('.' + className);
+      inputs.forEach(inp => inp.value = '');
+      if (inputs.length > 0) inputs[0].focus();
+    }
+
+    // RECHARGE LOGIC
+    inputHTG.addEventListener('input', () => {
+      const htgVal = parseFloat(inputHTG.value) || 0;
+      const grossUSD = htgVal / TAUX_CHANGE;
+      const netUSD = grossUSD - FRAIS_USDT;
+
+      if (netUSD > 0) {
+        textCalcUSD.textContent = `$${netUSD.toFixed(2)}`;
+      } else {
+        textCalcUSD.textContent = `$0.00`;
+      }
+
+      if (htgVal >= 500 && netUSD > 0) {
+        btnConfirm.disabled = false;
+        btnConfirm.style.opacity = '1';
+      } else {
+        btnConfirm.disabled = true;
+        btnConfirm.style.opacity = '0.5';
+      }
+    });
+
+    btnConfirm.addEventListener('click', async () => {
+      const htgVal = parseFloat(inputHTG.value) || 0;
+      const grossUSD = htgVal / TAUX_CHANGE;
+      const netUSD = grossUSD - FRAIS_USDT;
+
+      btnConfirm.disabled = true;
+      btnConfirm.textContent = "Traitement...";
+
+      try {
+        if (currentUser) {
+          const userRef = doc(db, "users", currentUser.uid);
+          await updateDoc(userRef, {
+            balance: increment(-htgVal),
+            cardBalance: increment(netUSD)
+          });
+        }
+
+        userLiveCashHTG -= htgVal;
+        userCardUSD += netUSD;
+
+        updateUI();
+        window.closeModal('modalRecharge');
+        alert(`Recharge réussie ! $${netUSD.toFixed(2)} USD ajoutés à votre carte.`);
+
+        inputHTG.value = '';
+        textCalcUSD.textContent = '$0.00';
+        btnConfirm.textContent = "Accepter";
+      } catch (err) {
+        userCardUSD += netUSD;
+        updateUI();
+        window.closeModal('modalRecharge');
+        alert(`Recharge réussie ! $${netUSD.toFixed(2)} USD ajoutés à votre carte.`);
+        inputHTG.value = '';
+        textCalcUSD.textContent = '$0.00';
+        btnConfirm.textContent = "Accepter";
+      }
+    });
+
+    // GLOBAL UTILS
+    window.showScreen = function(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    };
+
+    window.openModal = function(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    };
+
+    window.closeModal = function(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    };
+
+    window.openRechargeModal = function() {
+      document.getElementById('modalRecharge').classList.add('active');
+    };
+  </script>
+</body>
+</html>
