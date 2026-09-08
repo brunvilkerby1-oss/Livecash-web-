@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Retrait Natcash</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #071a12;
+      color: #ffffff;
+      padding: 20px 16px;
+      max-width: 440px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* Header Navigation */
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #facc15;
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    /* Solde Display Box */
+    .solde-card {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .solde-label {
+      font-size: 13px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .solde-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    /* Badge Natcash */
+    .method-badge {
+      background: #0f3322;
+      border: 1px solid #3b82f6;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .method-icon {
+      width: 40px;
+      height: 40px;
+      background: #3b82f6;
+      color: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .method-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .method-sub {
+      font-size: 12px;
+      color: #a7f3d0;
+    }
+
+    /* Form Container */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #a7f3d0;
+      margin-bottom: 8px;
+    }
+
+    .input-box {
+      width: 100%;
+      background: #05140d;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-box:focus {
+      border-color: #facc15;
+      box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+    }
+
+    /* Info Box */
+    .info-box {
+      background: rgba(250, 204, 21, 0.08);
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #facc15;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: #1e293b;
+      color: #64748b;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: not-allowed;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit.active {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.3);
+    }
+
+    /* Success / Error Message */
+    .message-status {
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+
+    .message-status.success {
+      color: #10b981;
+    }
+
+    .message-status.error {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="top-header">
+    <button class="btn-back" onclick="window.history.back()">←</button>
+    <div class="page-title">Retrait</div>
+  </div>
+
+  <!-- Afichage Solde -->
+  <div class="solde-card">
+    <div>
+      <div class="solde-label">Solde LiveCash disponible</div>
+      <div class="solde-val" id="userBalanceDisplay">0.00 HTG</div>
+    </div>
+    <div style="font-size: 24px;">🇭🇹</div>
+  </div>
+
+  <!-- Méthode Sélectionnée (Natcash) -->
+  <div class="method-badge">
+    <div class="method-icon">NC</div>
+    <div>
+      <div class="method-title">Natcash</div>
+      <div class="method-sub">Retrait direct sur votre compte Natcash</div>
+    </div>
+  </div>
+
+  <!-- Formulaire -->
+  <form id="retraitForm" onsubmit="event.preventDefault(); handleRetrait();">
+    
+    <!-- 1. Montan -->
+    <div class="form-group">
+      <label class="form-label">Montant à retirer (HTG)</label>
+      <input type="number" id="retraitAmount" class="input-box" placeholder="Ex: 500" min="50" oninput="validateForm()">
+    </div>
+
+    <!-- 2. Nimewo Natcash -->
+    <div class="form-group">
+      <label class="form-label">Numéro Natcash</label>
+      <input type="tel" id="phoneNumber" class="input-box" placeholder="Ex: 40000000" oninput="validateForm()">
+    </div>
+
+    <!-- 3. Non ki sou kont Natcash la -->
+    <div class="form-group">
+      <label class="form-label">Nom complet sur le compte Natcash</label>
+      <input type="text" id="accountHolder" class="input-box" placeholder="Entrez le nom complet" oninput="validateForm()">
+    </div>
+
+    <div class="info-box">
+      ℹ️ <strong>Information:</strong> Assurez-vous que le nom et le numéro correspondent exactement à votre compte Natcash pour éviter tout retard dans le traitement.
+    </div>
+
+    <!-- Bouton Konfime -->
+    <button type="submit" id="btnSubmitRetrait" class="btn-submit" disabled>Confirmer le retrait</button>
+    
+    <div id="statusMessage" class="message-status"></div>
+  </form>
+
+  <script>
+    let availableBalanceHTG = 5000; // Egzanp solde ki ap soti nan Firebase
+
+    // Afiche solde a
+    document.getElementById('userBalanceDisplay').textContent = `${availableBalanceHTG.toLocaleString('fr-FR')} HTG`;
+
+    const amountInput = document.getElementById('retraitAmount');
+    const phoneInput = document.getElementById('phoneNumber');
+    const nameInput = document.getElementById('accountHolder');
+    const submitBtn = document.getElementById('btnSubmitRetrait');
+    const statusMsg = document.getElementById('statusMessage');
+
+    function validateForm() {
+      const amount = parseFloat(amountInput.value) || 0;
+      const phone = phoneInput.value.trim();
+      const name = nameInput.value.trim();
+
+      // Verifikasyon: Montan an dwe fèt, gen pi piti 8 chif nan nimewo a, epi non an pa dwe vid
+      if (amount > 0 && amount <= availableBalanceHTG && phone.length >= 8 && name.length >= 3) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+        statusMsg.style.display = 'none';
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('active');
+        
+        if (amount > availableBalanceHTG) {
+          statusMsg.textContent = "Solde insuffisant pour ce montant.";
+          statusMsg.className = "message-status error";
+          statusMsg.style.display = "block";
+        } else {
+          statusMsg.style.display = 'none';
+        }
+      }
+    }
+
+    function handleRetrait() {
+      const amount = parseFloat(amountInput.value);
+      const phone = phoneInput.value.trim();
+      const name = nameInput.value.trim();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Traitement en cours...";
+
+      // Simulation de traitement (lè n ap lye l ak Firebase)
+      setTimeout(() => {
+        availableBalanceHTG -= amount;
+        document.getElementById('userBalanceDisplay').textContent = `${availableBalanceHTG.toLocaleString('fr-FR')} HTG`;
+
+        statusMsg.textContent = `Demande de retrait de ${amount} HTG envoyée avec succès pour ${name} (${phone})!`;
+        statusMsg.className = "message-status success";
+        statusMsg.style.display = "block";
+
+        amountInput.value = '';
+        phoneInput.value = '';
+        nameInput.value = '';
+        submitBtn.textContent = "Confirmer le retrait";
+        submitBtn.classList.remove('active');
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
