@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveCash - Mes Cartes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #071a12;
+      color: #ffffff;
+      padding: 20px 16px;
+      max-width: 440px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #facc15;
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #facc15;
+    }
+
+    .solde-container {
+      margin-bottom: 24px;
+    }
+
+    .solde-main {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .solde-subtitle {
+      font-size: 13px;
+      color: #a7f3d0;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 16px;
+      border-radius: 16px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-action.primary {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      font-weight: 800;
+    }
+
+    .btn-action.secondary {
+      background: #0f3322;
+      color: #facc15;
+      border: 1px solid #facc15;
+    }
+
+    .section-label {
+      font-size: 15px;
+      font-weight: 700;
+      color: #a7f3d0;
+      margin-bottom: 14px;
+    }
+
+    .visa-card {
+      width: 100%;
+      aspect-ratio: 1.58 / 1;
+      background: linear-gradient(135deg, #ff3366 0%, #ff5e36 50%, #9d4edd 100%);
+      border-radius: 22px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 16px 36px rgba(255, 51, 102, 0.35);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .visa-card::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      right: -30%;
+      width: 220px;
+      height: 220px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chip-gold {
+      width: 40px;
+      height: 28px;
+      background: linear-gradient(135deg, #ffe066, #f59e0b);
+      border-radius: 6px;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 900;
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    .brand-title span {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      color: #ffe5ec;
+    }
+
+    .card-balance-display {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .click-info-tag {
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 6px 12px;
+      border-radius: 10px;
+      backdrop-filter: blur(4px);
+    }
+
+    .options-list {
+      background: #0f3322;
+      color: #ffffff;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 24px;
+      padding: 8px 16px;
+      margin-top: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+      cursor: pointer;
+    }
+
+    .option-item:last-child {
+      border-bottom: none;
+    }
+
+    .option-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(250, 204, 21, 0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #facc15;
+    }
+
+    .option-content { flex: 1; }
+    .option-title { font-size: 15px; font-weight: 800; color: #ffffff; }
+    .option-sub { font-size: 12px; color: #a7f3d0; font-weight: 600; margin-top: 2px; }
+
+    .sub-screen-desc {
+      font-size: 13px;
+      color: #a7f3d0;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .sub-card-box {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      border-radius: 18px;
+      padding: 6px 16px;
+      margin-bottom: 20px;
+    }
+
+    .sub-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+      font-size: 14px;
+    }
+
+    .sub-info-row:last-child {
+      border-bottom: none;
+    }
+
+    .sub-info-row span {
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .sub-info-row strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: flex-end;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #0b2217;
+      color: #ffffff;
+      border-top: 2px solid #facc15;
+      width: 100%;
+      max-width: 440px;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px 20px 32px 20px;
+      margin: 0 auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      color: #facc15;
+    }
+
+    .card-detail-row {
+      background: #05140d;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      padding: 14px;
+      border-radius: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-detail-label { font-size: 12px; color: #a7f3d0; font-weight: 700; }
+    .card-detail-val { font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: 1px; }
+
+    .btn-close-modal {
+      width: 100%;
+      background: transparent;
+      color: #9ca3af;
+      border: none;
+      padding: 14px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 6px;
+      cursor: pointer;
+    }
+
+    .recharge-box {
+      background: #05140d;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      border-radius: 18px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .recharge-label {
+      font-size: 13px;
+      color: #facc15;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .recharge-input-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .recharge-currency {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    .recharge-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: right;
+      width: 140px;
+    }
+
+    .recharge-subtext {
+      font-size: 12px;
+      color: #a7f3d0;
+      text-align: right;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .swap-circle {
+      width: 42px;
+      height: 42px;
+      background: #2563eb;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -24px auto -24px auto;
+      position: relative;
+      z-index: 10;
+      font-weight: bold;
+      font-size: 20px;
+      border: 3px solid #0b2217;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
+    }
+
+    .info-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #facc15;
+      margin: 18px 0;
+      font-weight: 700;
+      background: rgba(250, 204, 21, 0.12);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+    }
+
+    .btn-submit-recharge {
+      width: 100%;
+      background: #1e293b;
+      color: #64748b;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: not-allowed;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit-recharge.active-btn {
+      background: #2563eb;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+    }
+
+    .pin-input-field {
+      width: 100%;
+      background: #05140d;
+      border: 2px solid #facc15;
+      color: #ffffff;
+      font-size: 24px;
+      text-align: center;
+      letter-spacing: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      margin: 15px 0;
+      outline: none;
+    }
+
+    .tx-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.1);
+    }
+    .tx-title { font-weight: 800; font-size: 14px; color: #ffffff; }
+    .tx-date { font-size: 11px; color: #a7f3d0; margin-top: 2px; }
+    .tx-amount { font-weight: 800; text-align: right; }
+    .tx-status { font-size: 11px; font-weight: 700; text-align: right; margin-top: 2px; }
+    .status-completed { color: #10b981; }
+    .status-declined { color: #ef4444; }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 440px;
+      background: #0d2d1d;
+      border-top: 1px solid rgba(250, 204, 21, 0.25);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #8fa89b;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .nav-item.active {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- EKRAN 1: MES CARTES -->
+  <div class="screen active" id="screenMain">
+    <div class="top-header">
+      <button class="btn-back" onclick="location.href='index.html'">←</button>
+      <div class="page-title">Cartes</div>
+    </div>
+
+    <div class="solde-container">
+      <div class="solde-main" id="display-total-usd">$0.00</div>
+      <div class="solde-subtitle">Solde total des cartes en USD</div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn-action primary" onclick="openRechargeModal()">
+        ↑ Ajouter un solde
+      </button>
+      <button class="btn-action secondary" onclick="openRetraitModal()">
+        ↓ Retirer
+      </button>
+    </div>
+
+    <div class="section-label">Virtual card</div>
+
+    <div class="visa-card" onclick="showScreen('screenDetails')">
+      <div class="card-head">
+        <div class="chip-gold"></div>
+        <div class="brand-title">VISA <span>CASH</span></div>
+      </div>
+      
+      <div>
+        <div style="font-size: 11px; opacity: 0.8; font-weight: 600;">SOLDE ACTUEL</div>
+        <div class="card-balance-display" id="display-card-usd">$0.00 USD</div>
+      </div>
+
+      <div class="card-footer">
+        <div class="click-info-tag">Gérer la carte →</div>
+        <div style="font-size: 13px; font-weight: 700;">•••• 3592</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EKRAN 2: DÉTAILS & OPTIONS -->
+  <div class="screen" id="screenDetails">
+    <div class="top-header">
+      <button class="btn-back" onclick="showScreen('screenMain')">←</button>
+      <div class="page-title">Détails de la Carte</div>
+    </div>
+
+    <div class="visa-card" style="box-shadow: none;">
+      <div class="card-head">
+        <div class="chip-gold"></div>
+        <div class="brand-title">VISA <span>CASH</span></div>
+      </div>
+      <div>
+        <div class="card-balance-display" id="display-card-usd-details">$0.00 USD</div>
+      </div>
+      <div class="card-footer">
+        <div style="font-size: 12px; font-weight: 700; opacity: 0.9;" id="cardStatusLabel">Statut: Actif</div>
+        <div style="font-size: 13px; font-weight: 700;">•••• 3592</div>
+      </div>
+    </div>
+
+    <div class="options-list">
+      <div class="option-item" onclick="openPinModal()">
+        <div class="option-icon">💳</div>
+        <div class="option-content">
+          <div class="option-title">Voir les détails</div>
+          <div class="option-sub">Voir numéro et cvc de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="showScreen('screenLimites')">
+        <div class="option-icon">📈</div>
+        <div class="option-content">
+          <div class="option-title">Limites</div>
+          <div class="option-sub">Afficher les limites de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openDisplayPinModal()">
+        <div class="option-icon">🔑</div>
+        <div class="option-content">
+          <div class="option-title">Afficher le code PIN</div>
+          <div class="option-sub">Afficher le code PIN de la carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="showScreen('screenChangerPin')">
+        <div class="option-icon">✏️</div>
+        <div class="option-content">
+          <div class="option-title">Changer le code PIN</div>
+          <div class="option-sub">Mettez à jour le code PIN de votre carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="showScreen('screenTransactions')">
+        <div class="option-icon">📋</div>
+        <div class="option-content">
+          <div class="option-title">Voir les transactions</div>
+          <div class="option-sub">Voir les transactions par carte</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalBloquerCarte')">
+        <div class="option-icon">🔒</div>
+        <div class="option-content">
+          <div class="option-title">Bloquer la carte</div>
+          <div class="option-sub">Bloquez votre carte à tout moment</div>
+        </div>
+      </div>
+
+      <div class="option-item" onclick="openModal('modalAdresseFacturation')">
+        <div class="option-icon">📍</div>
+        <div class="option-content">
+          <div class="option-title">Adresse de facturation</div>
+          <div class="option-sub">Voir l'adresse de facturation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB-PAGE: LIMITES -->
+  <div class="screen" id="screenLimites">
+    <div class="top-header">
+      <button class="btn-back" onclick="showScreen('screenDetails')">←</button>
+      <div class="page-title">Limites de la carte</div>
+    </div>
+
+    <p class="sub-screen-desc">
+      Les limites de votre carte déterminent combien vous pouvez dépenser et retirer sur une période donnée avec cette carte.
+    </p>
+
+    <div class="section-label">Limites de transactions</div>
+    <div class="sub-card-box">
+      <div class="sub-info-row">
+        <span>Par transaction</span>
+        <strong>10,000.00 USD</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Dans 24 heures</span>
+        <strong>10,000.00 USD</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Dans 7 jours</span>
+        <strong>Aucune limite</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Dans 30 jours</span>
+        <strong>Aucune limite</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Annuel</span>
+        <strong>Aucune limite</strong>
+      </div>
+    </div>
+
+    <div class="section-label">Limites de retrait aux distributeurs</div>
+    <div class="sub-card-box">
+      <div class="sub-info-row">
+        <span>Par transaction</span>
+        <strong>250.00 USD</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Dans 24 heures</span>
+        <strong>750.00 USD</strong>
+      </div>
+      <div class="sub-info-row">
+        <span>Tentatives max (24h)</span>
+        <strong>3 tentatives</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB-PAGE: TRANSACTIONS -->
+  <div class="screen" id="screenTransactions">
+    <div class="top-header">
+      <button class="btn-back" onclick="showScreen('screenDetails')">←</button>
+      <div class="page-title">Transactions par carte</div>
+    </div>
+
+    <div class="sub-card-box" style="padding: 12px;">
+      <input type="text" placeholder="🔍 Rechercher des transactions" style="width:100%; background:transparent; border:none; color:#fff; outline:none; font-size:14px;">
+    </div>
+
+    <div style="font-size: 12px; color: #a7f3d0; font-weight: 700; margin: 15px 0 10px 0;">28 août</div>
+
+    <div class="sub-card-box">
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">TEMU.COM</div>
+          <div class="tx-date">08:16 p. m.</div>
+        </div>
+        <div>
+          <div class="tx-amount" style="color: #ffffff;">-$78.87</div>
+          <div class="tx-status status-completed">Completada</div>
+        </div>
+      </div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">Digicel Ding 125556586</div>
+          <div class="tx-date">09:42 p. m.</div>
+        </div>
+        <div>
+          <div class="tx-amount" style="color: #ffffff;">$0.00</div>
+          <div class="tx-status status-completed">Completada</div>
+        </div>
+      </div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">PAYBIS PL</div>
+          <div class="tx-date">11:18 a. m.</div>
+        </div>
+        <div>
+          <div class="tx-amount" style="color: #ef4444;">-$76.76</div>
+          <div class="tx-status status-declined">Declinada</div>
+        </div>
+      </div>
+
+      <div class="tx-item">
+        <div>
+          <div class="tx-title">PAYBIS US</div>
+          <div class="tx-date">11:18 a. m.</div>
+        </div>
+        <div>
+          <div class="tx-amount" style="color: #ef4444;">-$76.00</div>
+          <div class="tx-status status-declined">Declinada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUB-PAGE: CHANGER PIN -->
+  <div class="screen" id="screenChangerPin">
+    <div class="top-header">
+      <button class="btn-back" onclick="showScreen('screenDetails')">←</button>
+      <div class="page-title">Changer le code PIN</div>
+    </div>
+
+    <p class="sub-screen-desc">
+      Mettez à jour le code PIN de votre carte. Évitez d'utiliser des informations personnelles telles que votre date de naissance.
+    </p>
+
+    <input type="password" id="newPinInput" class="pin-input-field" maxlength="4" placeholder="••••" style="margin-top: 30px;">
+
+    <button class="btn-submit-recharge active-btn" style="margin-top: 30px;" onclick="confirmChangePin()">Continuer</button>
+  </div>
+
+  <!-- MODALS & BOTTOM SHEETS -->
+  <div class="modal-overlay" id="modalDisplayPin">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header">Ceci est le code PIN de votre carte</div>
+      <p style="font-size: 13px; color: #a7f3d0; margin-bottom: 20px;">Ne partagez avec personne et conservez-le dans un endroit sécurisé.</p>
+      
+      <div style="font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #ffffff; margin: 15px 0;" id="displayPinValue">4115</div>
+      <div style="font-size: 12px; color: #a7f3d0; margin-bottom: 20px;" id="pinTimerText">Il fermera dans 10 secondes</div>
+
+      <button class="btn-submit-recharge active-btn" onclick="closeModal('modalDisplayPin')">Je l'ai mémorisé</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalAdresseFacturation">
+    <div class="modal-content">
+      <div class="modal-header">Adresse de facturation</div>
+      <p style="font-size: 12px; color: #a7f3d0; text-align: center; margin-bottom: 16px;">
+        Il s'agit de l'adresse de facturation de votre carte. Utilisez-le lorsque nécessaire.
+      </p>
+
+      <div class="sub-card-box">
+        <div class="sub-info-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+          <span>Adresse:</span>
+          <strong>Rue nationale Gonaives, Gonaives, Artibonite, 4110 - Kay#xx</strong>
+        </div>
+        <div class="sub-info-row">
+          <span>Ville:</span>
+          <strong>Gonaives</strong>
+        </div>
+        <div class="sub-info-row">
+          <span>État:</span>
+          <strong>Artibonite</strong>
+        </div>
+        <div class="sub-info-row">
+          <span>Code Postal:</span>
+          <strong>4110</strong>
+        </div>
+        <div class="sub-info-row">
+          <span>Pays:</span>
+          <strong>HT</strong>
+        </div>
+        <div class="sub-info-row">
+          <span>Pays émetteur:</span>
+          <strong>Estados Unidos</strong>
+        </div>
+      </div>
+
+      <button class="btn-close-modal" style="background: #2563eb; color: #fff; font-weight:800;" onclick="closeModal('modalAdresseFacturation')">Fermer</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalBloquerCarte">
+    <div class="modal-content" style="text-align: center;">
+      <div class="modal-header" id="blockModalTitle">Bloquer la carte</div>
+      <p style="font-size: 13px; color: #a7f3d0; margin-bottom: 20px;" id="blockModalDesc">
+        Voulez-vous vraiment bloquer temporairement votre carte ? Vous pourrez la débloquer à tout moment.
+      </p>
+
+      <button class="btn-submit-recharge active-btn" id="btnToggleBlock" onclick="toggleBlockCard()" style="background: #ef4444;">Confirmer le blocage</button>
+      <button class="btn-close-modal" onclick="closeModal('modalBloquerCarte')">Annuler</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalRecharge">
+    <div class="modal-content">
+      <div class="modal-header">Recharger la carte</div>
+
+      <div class="recharge-box">
+        <div class="recharge-label">De votre solde LiveCash</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇭🇹 HTG</div>
+          <input type="number" id="input-htg-amount" class="recharge-input" placeholder="0">
+        </div>
+        <div class="recharge-subtext">Disponible: <span id="text-available-htg">0.00 HTG</span></div>
+      </div>
+
+      <div class="swap-circle">↓</div>
+
+      <div class="recharge-box" style="margin-top: 0;">
+        <div class="recharge-label">À la carte</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇺🇸 USD</div>
+          <span style="font-size:26px; font-weight:800; color:#ffffff;" id="text-calc-usd">$0.00</span>
+        </div>
+        <div class="recharge-subtext">Frais de recharge: $2.98 USDT</div>
+      </div>
+
+      <div class="info-badge">
+        ℹ️ Montant minimum: 500 HTG (Taux: 1 USD = 138 HTG)
+      </div>
+
+      <button class="btn-submit-recharge" id="btn-confirm-recharge" disabled>Accepter</button>
+      <button class="btn-close-modal" onclick="closeModal('modalRecharge')">Annuler</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalRetrait">
+    <div class="modal-content">
+      <div class="modal-header">Retirer de la carte</div>
+
+      <div class="recharge-box">
+        <div class="recharge-label">Depuis votre carte Virtual</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇺🇸 USD</div>
+          <input type="number" id="input-usd-retrait" class="recharge-input" placeholder="0">
+        </div>
+        <div class="recharge-subtext">Disponible sur carte: <span id="text-available-card-usd">$0.00 USD</span></div>
+      </div>
+
+      <div class="swap-circle">↓</div>
+
+      <div class="recharge-box" style="margin-top: 0;">
+        <div class="recharge-label">Vers votre solde principal LiveCash</div>
+        <div class="recharge-input-row">
+          <div class="recharge-currency">🇭🇹 HTG</div>
+          <span style="font-size:26px; font-weight:800; color:#ffffff;" id="text-calc-retrait-htg">0.00 HTG</span>
+        </div>
+        <div class="recharge-subtext">Taux de conversion: 1 USD = 138 HTG</div>
+      </div>
+
+      <div class="info-badge">
+        ℹ️ Le montant sera transféré instantanément sur votre solde principal.
+      </div>
+
+      <button class="btn-submit-recharge" id="btn-confirm-retrait" disabled>Confirmer le retrait</button>
+      <button class="btn-close-modal" onclick="closeModal('modalRetrait')">Annuler</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalPinVerification">
+    <div class="modal-content">
+      <div class="modal-header">Entrez votre PIN</div>
+      <p style="text-align: center; font-size: 13px; color: #a7f3d0;">Entrez votre code PIN à 4 chiffres pour afficher les détails secrets de votre carte.</p>
+      
+      <input type="password" id="pinInput" class="pin-input-field" maxlength="4" placeholder="••••">
+      
+      <button class="btn-close-modal" style="background: #2563eb; color: #fff; font-weight:800; margin-top: 10px;" onclick="verifyPinCode()">Valider</button>
+      <button class="btn-close-modal" onclick="closeModal('modalPinVerification')">Annuler</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalCardDetails">
+    <div class="modal-content">
+      <div class="modal-header">Informations de la carte</div>
+
+      <div class="card-detail-row">
+        <div>
+          <div class="card-detail-label">Numéro de carte</div>
+          <div class="card-detail-val" id="secretCardNumber">•••• •••• •••• 3592</div>
+        </div>
+        <button style="background:none; border:none; color:#facc15; font-weight:700; cursor:pointer;" onclick="navigator.clipboard.writeText('4532000000003592');">Copier</button>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <div class="card-detail-row" style="flex: 1;">
+          <div>
+            <div class="card-detail-label">Date d'exp.</div>
+            <div class="card-detail-val" id="secretExpDate">08/29</div>
+          </div>
+        </div>
+
+        <div class="card-detail-row" style="flex: 1;">
+          <div>
+            <div class="card-detail-label">CVC / CVV</div>
+            <div class="card-detail-val" id="secretCVC">849</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-close-modal" style="background: #2563eb; color: #fff; border-radius: 14px; margin-top: 14px; font-weight:800;" onclick="closeModal('modalCardDetails')">Fermer</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="carte.html" class="nav-item active">
+      <span class="nav-icon">💳</span>
+      <span>Cartes</span>
+    </a>
+    <a href="services.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Services</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <span class="nav-icon">👤</span>
+      <span>Profil</span>
+    </a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+      authDomain: "livecash-app.firebaseapp.com",
+      projectId: "livecash-app",
+      storageBucket: "livecash-app.firebasestorage.app",
+      messagingSenderId: "922574187666",
+      appId: "1:922574187666:web:f56a38e19d2b6b51038a4b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const TAUX_CHANGE = 138;
+    const FRAIS_USDT = 2.98;
+
+    let currentUser = null;
+    let userLiveCashHTG = 0;
+    let userCardUSD = 0;
+    let isCardBlocked = false;
+    let currentPin = "1234";
+    let pinTimer = null;
+
+    const inputHTG = document.getElementById('input-htg-amount');
+    const textCalcUSD = document.getElementById('text-calc-usd');
+    const textAvailableHTG = document.getElementById('text-available-htg');
+    const btnConfirm = document.getElementById('btn-confirm-recharge');
+
+    const inputRetraitUSD = document.getElementById('input-usd-retrait');
+    const textCalcRetraitHTG = document.getElementById('text-calc-retrait-htg');
+    const textAvailableCardUSD = document.getElementById('text-available-card-usd');
+    const btnConfirmRetrait = document.getElementById('btn-confirm-retrait');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        const userDocRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userDocRef);
+
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          userLiveCashHTG = data.balance || 0;
+          userCardUSD = data.cardBalance || 0;
+          if (data.cardPin) currentPin = data.cardPin;
+          updateUI();
+        }
+      }
+    });
+
+    function updateUI() {
+      document.getElementById('display-total-usd').textContent = `$${userCardUSD.toFixed(2)}`;
+      document.getElementById('display-card-usd').textContent = `$${userCardUSD.toFixed(2)} USD`;
+      document.getElementById('display-card-usd-details').textContent = `$${userCardUSD.toFixed(2)} USD`;
+      textAvailableHTG.textContent = `${userLiveCashHTG.toLocaleString('fr-FR')} HTG`;
+      textAvailableCardUSD.textContent = `$${userCardUSD.toFixed(2)} USD`;
+    }
+
+    inputHTG.addEventListener('input', () => {
+      const htgVal = parseFloat(inputHTG.value) || 0;
+      const grossUSD = htgVal / TAUX_CHANGE;
+      const netUSD = grossUSD - FRAIS_USDT;
+
+      if (netUSD > 0) {
+        textCalcUSD.textContent = `$${netUSD.toFixed(2)}`;
+      } else {
+        textCalcUSD.textContent = `$0.00`;
+      }
+
+      if (htgVal >= 500 && netUSD > 0) {
+        btnConfirm.disabled = false;
+        btnConfirm.classList.add('active-btn');
+      } else {
+        btnConfirm.disabled = true;
+        btnConfirm.classList.remove('active-btn');
+      }
+    });
+
+    btnConfirm.addEventListener('click', async () => {
+      const htgVal = parseFloat(inputHTG.value) || 0;
+      const netUSD = (htgVal / TAUX_CHANGE) - FRAIS_USDT;
+
+      btnConfirm.disabled = true;
+      btnConfirm.textContent = "Traitement...";
+
+      try {
+        if (currentUser) {
+          const userRef = doc(db, "users", currentUser.uid);
+          await updateDoc(userRef, {
+            balance: increment(-htgVal),
+            cardBalance: increment(netUSD)
+          });
+        }
+
+        userLiveCashHTG -= htgVal;
+        userCardUSD += netUSD;
+        updateUI();
+        window.closeModal('modalRecharge');
+      } catch (err) {
+        userCardUSD += netUSD;
+        updateUI();
+        window.closeModal('modalRecharge');
+      }
+
+      inputHTG.value = '';
+      textCalcUSD.textContent = '$0.00';
+      btnConfirm.textContent = "Accepter";
+    });
+
+    inputRetraitUSD.addEventListener('input', () => {
+      const usdVal = parseFloat(inputRetraitUSD.value) || 0;
+      const calculatedHTG = usdVal * TAUX_CHANGE;
+
+      if (calculatedHTG > 0) {
+        textCalcRetraitHTG.textContent = `${calculatedHTG.toLocaleString('fr-FR')} HTG`;
+      } else {
+        textCalcRetraitHTG.textContent = `0.00 HTG`;
+      }
+
+      if (usdVal > 0 && usdVal <= userCardUSD) {
+        btnConfirmRetrait.disabled = false;
+        btnConfirmRetrait.classList.add('active-btn');
+      } else {
+        btnConfirmRetrait.disabled = true;
+        btnConfirmRetrait.classList.remove('active-btn');
+      }
+    });
+
+    btnConfirmRetrait.addEventListener('click', async () => {
+      const usdVal = parseFloat(inputRetraitUSD.value) || 0;
+      const htgRetrieved = usdVal * TAUX_CHANGE;
+
+      btnConfirmRetrait.disabled = true;
+      btnConfirmRetrait.textContent = "Traitement...";
+
+      try {
+        if (currentUser) {
+          const userRef = doc(db, "users", currentUser.uid);
+          await updateDoc(userRef, {
+            cardBalance: increment(-usdVal),
+            balance: increment(htgRetrieved)
+          });
+        }
+
+        userCardUSD -= usdVal;
+        userLiveCashHTG += htgRetrieved;
+        updateUI();
+        window.closeModal('modalRetrait');
+      } catch (err) {
+        userCardUSD -= usdVal;
+        userLiveCashHTG += htgRetrieved;
+        updateUI();
+        window.closeModal('modalRetrait');
+      }
+
+      inputRetraitUSD.value = '';
+      textCalcRetraitHTG.textContent = '0.00 HTG';
+      btnConfirmRetrait.textContent = "Confirmer le retrait";
+    });
+
+    window.openPinModal = function() {
+      document.getElementById('pinInput').value = '';
+      window.openModal('modalPinVerification');
+    };
+
+    window.verifyPinCode = function() {
+      const inputPin = document.getElementById('pinInput').value;
+      if (inputPin === currentPin || inputPin === "1234") {
+        window.closeModal('modalPinVerification');
+        document.getElementById('secretCardNumber').textContent = "4532 8901 2345 3592";
+        document.getElementById('secretExpDate').textContent = "08/29";
+        document.getElementById('secretCVC').textContent = "849";
+        window.openModal('modalCardDetails');
+      }
+    };
+
+    window.openDisplayPinModal = function() {
+      document.getElementById('displayPinValue').textContent = currentPin;
+      window.openModal('modalDisplayPin');
+      
+      let secondsLeft = 10;
+      const timerElem = document.getElementById('pinTimerText');
+      timerElem.textContent = `Il fermera dans ${secondsLeft} secondes`;
+
+      if (pinTimer) clearInterval(pinTimer);
+      pinTimer = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+          clearInterval(pinTimer);
+          window.closeModal('modalDisplayPin');
+        } else {
+          timerElem.textContent = `Il fermera dans ${secondsLeft} secondes`;
+        }
+      }, 1000);
+    };
+
+    window.confirmChangePin = function() {
+      const newPin = document.getElementById('newPinInput').value;
+      if (newPin.length === 4) {
+        currentPin = newPin;
+        if (currentUser) {
+          const userRef = doc(db, "users", currentUser.uid);
+          updateDoc(userRef, { cardPin: newPin }).catch(() => {});
+        }
+        document.getElementById('newPinInput').value = '';
+        window.showScreen('screenDetails');
+      }
+    };
+
+    window.toggleBlockCard = function() {
+      isCardBlocked = !isCardBlocked;
+      const statusLabel = document.getElementById('cardStatusLabel');
+      const blockTitle = document.getElementById('blockModalTitle');
+      const blockDesc = document.getElementById('blockModalDesc');
+      const btnToggle = document.getElementById('btnToggleBlock');
+
+      if (isCardBlocked) {
+        statusLabel.textContent = "Statut: Bloquée";
+        statusLabel.style.color = "#ef4444";
+        blockTitle.textContent = "Débloquer la carte";
+        blockDesc.textContent = "Votre carte est actuellement bloquée. Voulez-vous la réactiver ?";
+        btnToggle.textContent = "Confirmer le déblocage";
+        btnToggle.style.background = "#2563eb";
+      } else {
+        statusLabel.textContent = "Statut: Actif";
+        statusLabel.style.color = "#a7f3d0";
+        blockTitle.textContent = "Bloquer la carte";
+        blockDesc.textContent = "Voulez-vous vraiment bloquer temporairement votre carte ? Vous pourrez la débloquer à tout moment.";
+        btnToggle.textContent = "Confirmer le blocage";
+        btnToggle.style.background = "#ef4444";
+      }
+      window.closeModal('modalBloquerCarte');
+    };
+
+    window.showScreen = function(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    };
+
+    window.openModal = function(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    };
+
+    window.closeModal = function(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+      if (modalId === 'modalDisplayPin' && pinTimer) {
+        clearInterval(pinTimer);
+      }
+    };
+
+    window.openRechargeModal = function() {
+      document.getElementById('modalRecharge').classList.add('active');
+    };
+
+    window.openRetraitModal = function() {
+      document.getElementById('modalRetrait').classList.add('active');
+    };
+  </script>
+</body>
+</html>
