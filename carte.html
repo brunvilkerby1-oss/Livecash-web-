@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>LiveCash - Ma Carte Virtuelle</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #071a12;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 90px;
+    }
+
+    .top-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      width: 42px;
+      height: 42px;
+      background: #0f3322;
+      border: 1.5px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #facc15;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #facc15;
+    }
+
+    /* CARD VIRTUAL DESIGN */
+    .card-wrapper {
+      perspective: 1000px;
+      margin-bottom: 22px;
+    }
+
+    .virtual-card {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #0d3822 0%, #155e39 50%, #082114 100%);
+      border: 2px solid #facc15;
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(250, 204, 21, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-brand-logo {
+      font-size: 18px;
+      font-weight: 900;
+      color: #facc15;
+      letter-spacing: 1px;
+    }
+
+    .card-chip {
+      width: 42px;
+      height: 30px;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .card-number-box {
+      margin-top: 10px;
+    }
+
+    .card-number-label {
+      font-size: 10px;
+      color: #a7f3d0;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-number {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: #ffffff;
+      font-family: 'Courier New', Courier, monospace;
+      margin-top: 2px;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-holder-title {
+      font-size: 9px;
+      color: #a7f3d0;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-holder-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .card-expiry-box {
+      text-align: right;
+    }
+
+    .card-expiry-title {
+      font-size: 9px;
+      color: #a7f3d0;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .card-expiry {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* DETAILS LIST */
+    .details-container {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .details-header {
+      font-size: 15px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+      padding-bottom: 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      font-size: 13px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-copy {
+      background: #facc15;
+      color: #071a12;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* ACTION BUTTONS */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-card-action {
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 900;
+      font-size: 14px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(250, 204, 21, 0.25);
+    }
+
+    .btn-card-secondary {
+      background: #0f3322;
+      color: #facc15;
+      border: 1.5px solid #facc15;
+      box-shadow: none;
+    }
+
+    /* NO CARD STATE */
+    .no-card-box {
+      background: #0f3322;
+      border: 2px dashed #facc15;
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .no-card-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #facc15;
+      margin-bottom: 8px;
+    }
+
+    .no-card-desc {
+      font-size: 13px;
+      color: #a7f3d0;
+      margin-bottom: 20px;
+    }
+
+    .btn-order-now {
+      display: inline-block;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: #092418;
+      border-top: 1.5px solid rgba(250, 204, 21, 0.3);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .nav-item.active {
+      color: #facc15;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <a href="index.html" class="btn-back">←</a>
+    <div class="page-title">Ma Carte Virtuelle</div>
+  </div>
+
+  <div id="cardContent">
+    <!-- Si itilizatè a gen yon kàt -->
+    <div class="card-wrapper">
+      <div class="virtual-card">
+        <div class="card-top">
+          <div class="card-brand-logo">VISA CASH</div>
+          <div class="card-chip"></div>
+        </div>
+
+        <div class="card-number-box">
+          <div class="card-number-label">Numéro de carte</div>
+          <div class="card-number" id="cardNumDisplay">•••• •••• •••• ••••</div>
+        </div>
+
+        <div class="card-bottom">
+          <div>
+            <div class="card-holder-title">Titulaire</div>
+            <div class="card-holder-name" id="cardNameDisplay">CHARGEMENT...</div>
+          </div>
+          <div class="card-expiry-box">
+            <div class="card-expiry-title">Expire</div>
+            <div class="card-expiry" id="cardExpDisplay">MM/AA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detay Kàt la -->
+    <div class="details-container">
+      <div class="details-header">Détails de la Carte</div>
+
+      <div class="detail-row">
+        <span class="detail-label">Numéro Complet</span>
+        <span class="detail-value">
+          <span id="fullNumVal">4000 1234 5678 9010</span>
+          <button class="btn-copy" onclick="copyText('fullNumVal')">KOPYE</button>
+        </span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Date d'expiration</span>
+        <span class="detail-value" id="expVal">12/28</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Code CVV / CVC</span>
+        <span class="detail-value">
+          <span id="cvvVal">888</span>
+          <button class="btn-copy" onclick="copyText('cvvVal')">KOPYE</button>
+        </span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Solde Carte</span>
+        <span class="detail-value" style="color: #facc15;" id="cardBalanceVal">$0.00 USD</span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value" style="color: #4ade80;">Active</span>
+      </div>
+    </div>
+
+    <div class="action-grid">
+      <a href="recharge.html" class="btn-card-action">Recharger Carte</a>
+      <a href="commander-carte.html" class="btn-card-action btn-card-secondary">Nouvelle Carte</a>
+    </div>
+  </div>
+
+  <!-- Si itilizatè a PA GEN kàt ankò -->
+  <div id="noCardContent" style="display: none;">
+    <div class="no-card-box">
+      <div class="no-card-title">Aucune Carte Active</div>
+      <div class="no-card-desc">Vous n'avez pas encore demandé de carte virtuelle Visa Cash.</div>
+      <a href="commander-carte.html" class="btn-order-now">💳 Commander une carte maintenant</a>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="carte.html" class="nav-item active">
+      <span class="nav-icon">💳</span>
+      <span>Carte</span>
+    </a>
+    <a href="boostage.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Boost</span>
+    </a>
+    <a href="parametres.html" class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span>Réglages</span>
+    </a>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+      authDomain: "livecash-app.firebaseapp.com",
+      projectId: "livecash-app",
+      storageBucket: "livecash-app.firebasestorage.app",
+      messagingSenderId: "922574187666",
+      appId: "1:922574187666:web:f56a38e19d2b6b51038a4b",
+      measurementId: "G-V643QVVCZN"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const fullName = data.fullname || user.displayName || "TITULAIRE";
+          const cardUSD = data.cardUSD || 0.00;
+
+          document.getElementById('cardNameDisplay').innerText = fullName;
+          document.getElementById('cardBalanceVal').innerText = `$${cardUSD.toFixed(2)} USD`;
+        }
+      } else {
+        window.location.href = "register.html";
+      }
+    });
+
+    window.copyText = function(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text);
+      alert("✅ Kopye nan papye-penn : " + text);
+    };
+  </script>
+</body>
+</html>
