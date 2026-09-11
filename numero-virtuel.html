@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>LiveCash - Numéro Virtuel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      width: 100%; min-height: 100vh;
+      background: #071a12;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: 100px; /* Pou espas bottom nav */
+    }
+
+    /* Header Paj la */
+    .paj-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-bale {
+      text-decoration: none;
+      width: 40px; height: 40px;
+      background: #0f3322;
+      border: 1.5px solid #facc15;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #facc15;
+      font-weight: bold;
+    }
+
+    .paj-tit {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    /* Seksyon Opsyon 1: Kòd Verifikasyon (SMS Instant) */
+    .seksyon-opsyon {
+      background: #0f3322;
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .seksyon-tit {
+      font-size: 16px;
+      font-weight: 900;
+      color: #facc15;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .seksyon-desc {
+      font-size: 12px;
+      color: #a7f3d0;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      background: #071a12;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      padding: 14px;
+      color: #ffffff;
+      font-weight: 700;
+      outline: none;
+      font-size: 14px;
+      width: 100%;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .label-ti-tit {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    /* Modal Chwa Peyi */
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+    }
+    .country-item {
+      background: #071a12;
+      border: 1.5px solid transparent;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .country-item:hover, .country-item.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, 0.1);
+    }
+    .flag-icon { font-size: 24px; margin-bottom: 4px; }
+    .country-name { font-size: 11px; font-weight: 800; color: #ffffff; }
+
+    /* Modal Chwa Sèvis/Platfòm */
+    .service-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #071a12;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .service-item:hover, .service-item.active {
+      border-color: #facc15;
+      background: rgba(250, 204, 21, 0.1);
+    }
+    .service-logo { width: 30px; height: 30px; border-radius: 8px; }
+    .service-name { font-size: 13px; font-weight: 800; color: #ffffff; }
+
+    /* Bouton Kòmande */
+    .btn-action-nimewo {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #facc15, #ca8a04);
+      color: #071a12;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 10px;
+      box-shadow: 0 6px 16px rgba(250, 204, 21, 0.3);
+    }
+
+    /* Seksyon Rezilta kòmand nimewo */
+    #reziltaNimewo {
+      display: none;
+      background: #071a12;
+      border: 1px dashed #facc15;
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .nimewo-afiche {
+      font-size: 24px;
+      font-weight: 900;
+      color: #facc15;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .tan-ap-fini {
+      font-size: 12px;
+      font-weight: 600;
+      color: #ef4444;
+      margin-bottom: 16px;
+    }
+    .kod-sms-resevwa {
+      font-size: 32px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .ap-tann-kod {
+      font-size: 13px;
+      color: #a7f3d0;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; }
+    }
+
+    /* Seksyon Opsyon 2: Nimewo Pèmanan (Abonman Mwa) */
+    .perm-nimewo-afiche {
+      background: #071a12;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .perm-nimewo-jwi {
+      font-size: 20px;
+      font-weight: 900;
+      color: #facc15;
+      letter-spacing: 1px;
+    }
+    .inbox-container {
+      background: #071a12;
+      border-radius: 12px;
+      height: 150px;
+      padding: 10px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+    .sms-item {
+      background: #0f3322;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .sms-ekri { font-size: 12px; font-weight: 700; color: #ffffff; }
+    .sms-detay { font-size: 10px; color: #a7f3d0; margin-top: 2px; }
+
+    /* Modals yo */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 999;
+      padding: 16px;
+      padding-top: 30px;
+      overflow-y: auto;
+    }
+    .modal-kontni {
+      background: #0f3322;
+      border-radius: 20px;
+      border: 1.5px solid #facc15;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px; right: 16px;
+      color: #facc15;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .modal-tit {
+      font-size: 16px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    /* BOTTOM NAVIGATION BAR (FIXE ANBA) - Idem index */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 100%; max-width: 480px;
+      background: #092418;
+      border-top: 1.5px solid rgba(250, 204, 21, 0.3);
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 0;
+      z-index: 100;
+      box-shadow: 0 -6px 25px rgba(0,0,0,0.6);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 800;
+    }
+    .nav-item.active { color: #facc15; }
+    .nav-icon { font-size: 20px; margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- Paj Header -->
+  <div class="paj-header">
+    <a href="index.html" class="btn-bale">‹</a>
+    <h1 class="paj-tit">📱 Numéro Virtuel</h1>
+  </div>
+
+  <!-- OPSYON 1: KÒD VERIFIKASYON SMS INSTANT (Kout Tèm) -->
+  <div class="seksyon-opsyon">
+    <div class="seksyon-tit">🎟️ Kòd SMS Instant</div>
+    <p class="seksyon-desc">Jwenn yon nimewo rapid (kout tèm) pou resevwa kòd verifikasyon ou bezon. Nimewo a valid pou 10-20 minit, epi li disparèt apre ou resevwa kòd la.</p>
+
+    <!-- Fòm chwa peyi ak sèvis -->
+    <div class="label-ti-tit">1. Chwazi peyi nimewo a:</div>
+    <div class="input-box" id="showCountryPicker">
+      <span id="selectedCountry">Chwazi Peyi</span>
+    </div>
+
+    <div class="label-ti-tit">2. Chwazi sèvis/platfòm lan:</div>
+    <div class="input-box" id="showServicePicker">
+      <span id="selectedService">Chwazi Sèvis</span>
+    </div>
+
+    <!-- Pri ak bouton kòmande -->
+    <div style="text-align: center; margin: 15px 0;">
+      <span style="font-size: 11px; color: #a7f3d0;">Pri kòmand sa a:</span><br>
+      <span style="font-size: 22px; font-weight: 900; color: #ffffff;">~ $0.50</span>
+      <span style="font-size: 12px; color: #facc15; font-weight: bold;">(Solde HTG)</span>
+    </div>
+
+    <button class="btn-action-nimewo" id="btnKomandeSms">Kòmande Kòd Instant</button>
+
+    <!-- Rezilta lè nimewo a kòmande -->
+    <div id="reziltaNimewo">
+      <div style="font-size: 11px; color: #ffffff; margin-bottom: 4px;">Nimewo ou resevwa:</div>
+      <div class="nimewo-afiche" id="aficheNimewoKomand">+1 (555) 123-4567</div>
+      <div class="tan-ap-fini">Tan validite: 14:59</div>
+      
+      <div style="font-size: 11px; color: #ffffff; margin-bottom: 4px;">Kòd Verifikasyon (SMS):</div>
+      <!-- Kòd la ap afiche isit la lè n resevwa l via API -->
+      <div id="aficheKodSMS" class="ap-tann-kod">Ap tann kòd la...</div>
+    </div>
+  </div>
+
+  <!-- OPSYON 2: NIMOWO PÈMANAN (Abonman Mensuel) -->
+  <div class="seksyon-opsyon">
+    <div class="seksyon-tit">🔒 Nimewo Permanent</div>
+    <p class="seksyon-desc">Achte yon nimewo vityèl pou yon mwa (oswa plis). Ou ka resevwa SMS sou li tout mwa a nan bwat resepsyon ki anba a.</p>
+
+    <!-- Pri ak bouton kòmande -->
+    <div style="text-align: center; margin: 15px 0;">
+      <span style="font-size: 11px; color: #a7f3d0;">Pri abonman mensuel:</span><br>
+      <span style="font-size: 22px; font-weight: 900; color: #ffffff;">~ $5.00 /mwa</span>
+      <span style="font-size: 12px; color: #facc15; font-weight: bold;">(Solde Visa Cash)</span>
+    </div>
+
+    <button class="btn-action-nimewo">Achte Abonman Nimewo</button>
+
+    <!-- Rezilta lè nimewo pèmanan an kòmande -->
+    <div style="margin-top: 20px; display: none;" id="seksyonInbouxPerm">
+      <div class="label-ti-tit">Nimewo pèmanan ou:</div>
+      <div class="perm-nimewo-afiche">
+        <span class="perm-nimewo-jwi">+1 (555) 987-6543</span>
+        <div style="font-size: 10px; color: #a7f3d0;">Valid jiska: 15 Nov 2026</div>
+      </div>
+      
+      <div class="label-ti-tit">Inbox SMS (An tan reyèl):</div>
+      <div class="inbox-container">
+        <!-- SMS yo ap afiche isit la otomatikman via API -->
+        <div class="sms-item">
+          <div class="sms-ekri">Kod Google: 456123. Pa pataje li.</div>
+          <div class="sms-detay">Soti nan: Google - 2 minit de sa</div>
+        </div>
+        <div class="sms-item">
+          <div class="sms-ekri">Kod verifikasyon WhatsApp: 987654</div>
+          <div class="sms-detay">Soti nan: WhatsApp - 5 minit de sa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS POU PICKERS YO -->
+  <!-- 1. Modal Chwa Peyi -->
+  <div id="modalPeyi" class="modal">
+    <div class="modal-kontni">
+      <span class="modal-close" id="closePeyiModal">&times;</span>
+      <h3 class="modal-tit">Chwazi Peyi Nimewo a</h3>
+      <div class="country-grid">
+        <div class="country-item active">
+          <div class="flag-icon">🇺🇸</div>
+          <div class="country-name">USA</div>
+        </div>
+        <div class="country-item">
+          <div class="flag-icon">🇫🇷</div>
+          <div class="country-name">France</div>
+        </div>
+        <div class="country-item">
+          <div class="flag-icon">🇨🇦</div>
+          <div class="country-name">Canada</div>
+        </div>
+        <div class="country-item">
+          <div class="flag-icon">🇬🇧</div>
+          <div class="country-name">UK</div>
+        </div>
+        <div class="country-item">
+          <div class="flag-icon">🇳🇬</div>
+          <div class="country-name">Nigeria</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Modal Chwa Sèvis/Platfòm -->
+  <div id="modalService" class="modal">
+    <div class="modal-kontni">
+      <span class="modal-close" id="closeServiceModal">&times;</span>
+      <h3 class="modal-tit">Chwazi Platfòm Lan</h3>
+      <div class="service-list">
+        <div class="service-item active">
+          <div class="service-name">Telegram</div>
+        </div>
+        <div class="service-item">
+          <div class="service-name">WhatsApp</div>
+        </div>
+        <div class="service-item">
+          <div class="service-name">ChatGPT / OpenAI</div>
+        </div>
+        <div class="service-item">
+          <div class="service-name">TikTok</div>
+        </div>
+        <div class="service-item">
+          <div class="service-name">Google</div>
+        </div>
+        <div class="service-item">
+          <div class="service-name">Facebook / Instagram</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION BAR (FIXE ANBA) -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span>Accueil</span>
+    </a>
+    <a href="carte.html" class="nav-item">
+      <span class="nav-icon">💳</span>
+      <span>Carte</span>
+    </a>
+    <a href="boostage.html" class="nav-item">
+      <span class="nav-icon">🚀</span>
+      <span>Boost</span>
+    </a>
+    <!-- Paj sa a aktive sou Numewo -->
+    <div class="nav-item active" id="navMenuBtn" style="cursor: pointer;">
+      <span class="nav-icon">📱</span>
+      <span>Numéro</span>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT JESTYON MODALS ETAFIKAS POU OPSYON YO -->
+  <script>
+    // 1. Jestyon Modal Peyi
+    document.getElementById('showCountryPicker').addEventListener('click', () => {
+      document.getElementById('modalPeyi').style.display = 'block';
+    });
+    document.getElementById('closePeyiModal').addEventListener('click', () => {
+      document.getElementById('modalPeyi').style.display = 'none';
+    });
+
+    // Chwazi Peyi
+    document.querySelectorAll('#modalPeyi .country-item').forEach(item => {
+      item.addEventListener('click', function() {
+        document.querySelector('#modalPeyi .country-item.active').classList.remove('active');
+        this.classList.add('active');
+        document.getElementById('selectedCountry').innerText = this.querySelector('.country-name').innerText;
+        document.getElementById('selectedCountry').style.color = '#ffffff';
+        document.getElementById('modalPeyi').style.display = 'none';
+      });
+    });
+
+    // 2. Jestyon Modal Sèvis
+    document.getElementById('showServicePicker').addEventListener('click', () => {
+      document.getElementById('modalService').style.display = 'block';
+    });
+    document.getElementById('closeServiceModal').addEventListener('click', () => {
+      document.getElementById('modalService').style.display = 'none';
+    });
+
+    // Chwazi Sèvis
+    document.querySelectorAll('#modalService .service-item').forEach(item => {
+      item.addEventListener('click', function() {
+        document.querySelector('#modalService .service-item.active').classList.remove('active');
+        this.classList.add('active');
+        document.getElementById('selectedService').innerText = this.querySelector('.service-name').innerText;
+        document.getElementById('selectedService').style.color = '#ffffff';
+        document.getElementById('modalService').style.display = 'none';
+      });
+    });
+
+    // SIMILASYON KÒMAND NIMOWO (OPSYON 1)
+    document.getElementById('btnKomandeSms').addEventListener('click', () => {
+      // Afiche bwat rezilta a
+      document.getElementById('reziltaNimewo').style.display = 'block';
+      this.innerText = 'Repran yon lòt kòd rapid'; // Chanje tèks bouton an
+      
+      // Simile resevwa kòd SMS apre 5 segonn
+      setTimeout(() => {
+        document.getElementById('aficheKodSMS').classList.remove('ap-tann-kod');
+        document.getElementById('aficheKodSMS').classList.add('kod-sms-resevwa');
+        document.getElementById('aficheKodSMS').innerText = '58971'; // Similasyon kòd la resevwa
+      }, 5000); // 5 segonn wait
+    });
+  </script>
+
+</body>
+</html>
