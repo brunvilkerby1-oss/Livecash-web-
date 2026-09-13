@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commander une Carte - LiveCash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: #071a12;
+            color: #ffffff;
+            padding: 20px 16px;
+            max-width: 440px;
+            margin: 0 auto;
+            min-height: 100vh;
+            padding-bottom: 90px;
+        }
+
+        .top-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .btn-back {
+            width: 42px;
+            height: 42px;
+            background: #0f3322;
+            border: 1px solid #facc15;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #facc15;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #facc15;
+        }
+
+        .form-container {
+            background: #0f3322;
+            border: 1px solid rgba(250, 204, 21, 0.25);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #a7f3d0;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            background: #05140d;
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #facc15;
+        }
+
+        .price-info {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px dashed #facc15;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .price-info .amount {
+            font-size: 22px;
+            font-weight: 800;
+            color: #facc15;
+            margin-top: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #facc15, #ca8a04);
+            color: #071a12;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 440px;
+            background: #0d2d1d;
+            border-top: 1px solid rgba(250, 204, 21, 0.25);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #8fa89b;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            color: #facc15;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <a href="index.html" class="btn-back">←</a>
+        <div class="page-title">Commander une Carte</div>
+    </div>
+
+    <form id="formCommandeCarte" class="form-container">
+        
+        <div class="form-group">
+            <label for="fullName">Nom complet (Tel qu'il apparaîtra)</label>
+            <input type="text" id="fullName" placeholder="Ex: Jean Baptiste" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Adresse E-mail</label>
+            <input type="email" id="email" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Numéro de Téléphone (WhatsApp)</label>
+            <input type="tel" id="phone" placeholder="+509 XXXX XXXX" required>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Pays de résidence</label>
+            <select id="country" required>
+                <option value="">Sélectionnez votre pays</option>
+                <option value="HT">Haïti</option>
+                <option value="DO">République Dominicaine</option>
+                <option value="US">États-Unis</option>
+                <option value="CA">Canada</option>
+                <option value="FR">France</option>
+                <option value="CL">Chili</option>
+                <option value="BR">Brésil</option>
+                <option value="OTHER">Autre pays</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="cardType">Type de Carte</label>
+            <select id="cardType" required>
+                <option value="virtual_visa">Carte Virtuelle VISA (Internationale)</option>
+                <option value="virtual_mastercard">Carte Virtuelle Mastercard</option>
+            </select>
+        </div>
+
+        <div class="price-info">
+            <div style="font-size: 12px; color: #a7f3d0;">Frais de création de la carte</div>
+            <div class="amount">$10.00 USD</div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">Payer et Commander</button>
+
+    </form>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+        </a>
+        <a href="commande-carte.html" class="nav-item active">
+            <span class="nav-icon">💳</span>
+            <span>Cartes</span>
+        </a>
+        <a href="boostage.html" class="nav-item">
+            <span class="nav-icon">🚀</span>
+            <span>Booste</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span>Profil</span>
+        </a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHLErZaBjAyCwtB0dCDSNhw9OGwi8qf98",
+            authDomain: "livecash-app.firebaseapp.com",
+            projectId: "livecash-app",
+            storageBucket: "livecash-app.firebasestorage.app",
+            messagingSenderId: "922574187666",
+            appId: "1:922574187666:web:f56a38e19d2b6b51038a4b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Tcheke si moun nan konekte (men NOU PA FÈ REDIRECTION OTOMATIK POU PA SOTE PAJ LA)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                if(user.email && !document.getElementById('email').value) {
+                    document.getElementById('email').value = user.email;
+                }
+            }
+        });
+
+        // Soumèt fòmilè a
+        document.getElementById('formCommandeCarte').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = "Traitement en cours...";
+
+            const cardData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                country: document.getElementById('country').value,
+                cardType: document.getElementById('cardType').value,
+                status: "pending",
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                if (currentUser) {
+                    const userRef = doc(db, "users", currentUser.uid);
+                    await setDoc(userRef, {
+                        cardRequested: true,
+                        cardDetails: cardData
+                    }, { merge: true });
+                }
+
+                // KOUNYE A SÈLMAN li redivije sou paj cartes.html la apre l fin soumèt
+                window.location.href = "cartes.html";
+            } catch (err) {
+                console.error("Erreur Firebase:", err);
+                alert("Une erreur est survenue lors de la commande.");
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = "Payer et Commander";
+            }
+        });
+    </script>
+</body>
+</html>
